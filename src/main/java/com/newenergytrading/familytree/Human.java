@@ -19,9 +19,16 @@ public class Human {
     }
 
     public Human getOldestFamilyMember() {
-        if (this.mother == null && this.father == null) {
+        if (this.mother == null && this.father == null && this.siblings.size() < 1) {
             return this;
-        } else if (this.mother != null && this.father != null)  {
+        } else if (this.mother == null && this.father == null && this.siblings.size() > 0) {
+            for (int i = this.siblings.size()-1; i >= 0; i--) {
+                if (this.getAge() < this.siblings.get(i).getAge()) {
+                       return this.siblings.get(i);
+                }
+            }
+        }
+        else if (this.mother != null && this.father != null)  {
             if (this.getAge() < this.mother.getOldestFamilyMember().getAge() && this.getAge() < this.father.getOldestFamilyMember().getAge()) {
                 Human oldestMother = this.mother.getOldestFamilyMember();
                 Human oldestFather = this.father.getOldestFamilyMember();
@@ -31,7 +38,7 @@ public class Human {
                     return oldestMother;
                 }
             }
-        } else if (this.mother != null && this.father == null) {
+        } else if (this.mother != null) {
             if (this.getAge() < this.mother.getOldestFamilyMember().getAge()) {
                 return this.mother.getOldestFamilyMember();
             } else {
