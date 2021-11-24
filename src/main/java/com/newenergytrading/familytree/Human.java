@@ -41,14 +41,10 @@ public class Human {
         } else if (this.mother != null) {
             if (this.getAge() < this.mother.getOldestFamilyMember().getAge()) {
                 return this.mother.getOldestFamilyMember();
-            } else {
-                return this;
             }
         } else {
             if (this.getAge() < this.father.getOldestFamilyMember().getAge()) {
                 return this.father.getOldestFamilyMember();
-            } else {
-                return this;
             }
         }
         return this;
