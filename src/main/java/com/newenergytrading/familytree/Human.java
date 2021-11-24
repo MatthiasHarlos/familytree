@@ -22,13 +22,15 @@ public class Human {
         if (this.mother == null && this.father == null && this.siblings.size() < 1) {
             return this;
         } else if (this.mother == null && this.father == null && this.siblings.size() > 0) {
-            for (int i = this.siblings.size()-1; i >= 0; i--) {
-                if (this.getAge() < this.siblings.get(i).getAge()) {
-                       return this.siblings.get(i);
+            for (Human siblingOne : this.siblings) {
+                for (Human siblingTwo : this.siblings) {
+                    if (this.getAge() < siblingOne.getAge() && siblingTwo.getAge() < siblingOne.getAge()) {
+                        return siblingOne;
+                    }
                 }
+
             }
-        }
-        else if (this.mother != null && this.father != null)  {
+        } else if (this.mother != null && this.father != null)  {
             if (this.getAge() < this.mother.getOldestFamilyMember().getAge() && this.getAge() < this.father.getOldestFamilyMember().getAge()) {
                 Human oldestMother = this.mother.getOldestFamilyMember();
                 Human oldestFather = this.father.getOldestFamilyMember();

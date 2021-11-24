@@ -7,10 +7,10 @@ public class HumanTestOldestFamilyMember {
 
     @Test
     void testOne() {
-        Human son = new Human(17, "Matthias", null, null);
-        son.getSiblings().add(new Human(18, "bruder1", null, null));
-        son.getSiblings().add(new Human(16, "bruder2", null, null));
-        Assertions.assertEquals(son.getSiblings().get(0), son.getOldestFamilyMember());
+        Human son = new Human(16, "Matthias", null, null);
+        son.getSiblings().add(new Human(17, "bruder1", null, null));
+        son.getSiblings().add(new Human(18, "bruder2", null, null));
+        Assertions.assertEquals(son.getSiblings().get(1), son.getOldestFamilyMember());
 
     }
 
