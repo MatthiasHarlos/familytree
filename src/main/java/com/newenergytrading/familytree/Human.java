@@ -18,22 +18,26 @@ public class Human {
         this.father = father;
     }
 
-    public Human getOldestFamilyMember() {
-        if (this.mother == null && this.father == null && this.siblings.size() < 1) {
-            return this;
-        } else if (this.mother == null && this.father == null && this.siblings.size() > 0) {
-            for (Human siblingOne : this.siblings) {
-                for (Human siblingTwo : this.siblings) {
-                    if (this.getAge() < siblingOne.getAge() && siblingTwo.getAge() < siblingOne.getAge()) {
-                        return siblingOne;
-                    }
+    public Human getOldestSibling() {
+         if (this.getSiblings().size() > 1) {
+            Human result = this.getSiblings().get(0);
+            for (Human h : this.siblings) {
+                if (h.getAge() > result.getAge()) {
+                    result = h;
+                    return result;
                 }
-
             }
+         }
+         return this;
+    }
+
+    public Human getOldestFamilyMember() {
+        if (this.mother == null && this.father == null) {
+            return this.getOldestSibling();
         } else if (this.mother != null && this.father != null)  {
             if (this.getAge() < this.mother.getOldestFamilyMember().getAge() && this.getAge() < this.father.getOldestFamilyMember().getAge()) {
-                Human oldestMother = this.mother.getOldestFamilyMember();
-                Human oldestFather = this.father.getOldestFamilyMember();
+                Human oldestMother = this.mother.getOldestFamilyMember().getOldestSibling();
+                Human oldestFather = this.father.getOldestFamilyMember().getOldestSibling();
                 if (oldestMother.getAge() < oldestFather.getAge()) {
                     return oldestFather;
                 } else {
@@ -42,14 +46,14 @@ public class Human {
             }
         } else if (this.mother != null) {
             if (this.getAge() < this.mother.getOldestFamilyMember().getAge()) {
-                return this.mother.getOldestFamilyMember();
+                return this.mother.getOldestFamilyMember().getOldestSibling();
             }
         } else {
             if (this.getAge() < this.father.getOldestFamilyMember().getAge()) {
-                return this.father.getOldestFamilyMember();
+                return this.father.getOldestFamilyMember().getOldestSibling();
             }
         }
-        return this;
+        return this.getOldestSibling();
     }
 
     public int getGenerationCount() {
@@ -124,5 +128,12 @@ public class Human {
 
     public void setFather(Human father) {
         this.father = father;
+    }
+
+    @Override
+    public String toString() {
+        return "Human{" +
+                "firstName='" + firstName + '\'' +
+                '}';
     }
 }
