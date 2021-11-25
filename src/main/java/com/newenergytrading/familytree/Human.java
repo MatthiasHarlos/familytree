@@ -22,7 +22,7 @@ public class Human {
          if (this.getSiblings().size() > 1) {
             Human result = this.getSiblings().get(0);
             for (Human h : this.siblings) {
-                if (h.getAge() > result.getAge()) {
+                if (h.getAge() > result.getAge() && h.getAge() > this.getAge()) {
                     result = h;
                     return result;
                 }
