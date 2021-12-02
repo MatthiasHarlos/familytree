@@ -1,9 +1,5 @@
 package com.newenergytrading.familytree;
 
-import org.springframework.lang.NonNull;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;

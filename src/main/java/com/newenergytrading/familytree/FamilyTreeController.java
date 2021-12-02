@@ -28,6 +28,13 @@ public class FamilyTreeController {
         return "input-template";
     }
 
+    @PostMapping("changing")
+    public String changingTree (Human human) {
+
+        System.out.println(human);
+        return "redirect:familyTree";
+    }
+
     @PostMapping("saveHumanBean")
     public String saveHuman(@Valid @ModelAttribute("humanBean") HumanBean humanBean, BindingResult bindingResult, Model model) {
         model.addAttribute("humanBeanToSave", new HumanBean());

@@ -99,12 +99,11 @@ public class Human {
     public String getInfoPopUp() {
         if (this.mother == null && this.father == null) {
             return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
-                    "    <form action=\"/changing\" class=\"form-container\">\n" +
+                    "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
                     "        <h1>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"email\">\n" +
-                    "        <label for=\"psw\"><b>Land</b></label>\n" +
-                    "        <input type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"psw\">\n" +
+                    "        <input th:field='*{lastName}' type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
                     "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
                     "    </form>\n" +
@@ -113,12 +112,12 @@ public class Human {
             String ancestorsMother = this.mother.getInfoPopUp();
             String ancestorsFather = this.father.getInfoPopUp();
             return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
-                    "    <form action=\"/changing\" class=\"form-container\">\n" +
+                    "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
                     "        <h1>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"email\">\n" +
+                    "        <input th:field='*{lastName}' type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
                     "        <label for=\"psw\"><b>Land</b></label>\n" +
-                    "        <input type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"psw\">\n" +
+                    "        <input th:field='*{country.setCountry()}' type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"country\">\n" +
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
                     "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
                     "    </form>\n" +
@@ -126,24 +125,24 @@ public class Human {
                     ancestorsMother + ancestorsFather;
         } else if (this.mother != null) {
             return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
-                    "    <form action=\"/changing\" class=\"form-container\">\n" +
+                    "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
                     "        <h1>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"email\">\n" +
+                    "        <input th:field='*{lastName}' type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
                     "        <label for=\"psw\"><b>Land</b></label>\n" +
-                    "        <input type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"psw\">\n" +
+                    "        <input th:field='*{country.setCountry()}' type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"country\">\n" +
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
                     "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
                     "    </form>\n" +
                     "</div>" + this.mother.getInfoPopUp();
         } else {
             return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
-                    "    <form action=\"/changing\" class=\"form-container\">\n" +
+                    "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
                     "        <h1>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"email\">\n" +
+                    "        <input th:field='*{lastName}' type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
                     "        <label for=\"psw\"><b>Land</b></label>\n" +
-                    "        <input type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"psw\">\n" +
+                    "        <input th:field='*{country.setCountry()}' type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"country\">\n" +
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
                     "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
                     "    </form>\n" +
@@ -157,6 +156,10 @@ public class Human {
         this.mother = mother;
         this.father = father;
     }
+
+    public Human() {
+    }
+
     public Human(int age, String firstName, String lastName, Human mother, Human father) {
         this.age = age;
         this.firstName = firstName;
