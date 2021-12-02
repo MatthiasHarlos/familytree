@@ -11,7 +11,7 @@ public class Human {
     private Human mother;
     private Human father;
     private List<Human> siblings = new ArrayList<>();
-    private String country;
+    private CountryForm country;
 
     public String getFamilyTreeSiblings() {
         String siblingString = "";
@@ -203,11 +203,11 @@ public class Human {
                 '}';
     }
 
-    public String getCountry() {
+    public CountryForm getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(CountryForm country) {
         this.country = country;
     }
 }

@@ -46,7 +46,8 @@
     <input th:field="*{age}" type="number" placeholder="Alter">
     <input th:field="*{firstName}" type="text" placeholder="Vorname">
     <input th:field="*{lastName}" type="text" placeholder="Nachname">
-    <select th:field="*{country}">
+    <a href="http://localhost:8080/saveCountry" style="font-size: 10px">Länder hinzufügen</a>
+    <select th:if="${countries.size() > 0}" th:field="*{country}">
         <option th:each="country : ${countries}"
                 th:text="${country.country}"
                 th:value="${countries.indexOf(country)}"></option>

@@ -39,7 +39,7 @@ public class FamilyTreeController {
             }
         }
         if (humanBean.getCountry() != null) {
-            humanToSave.setCountry(countryList.get(humanBean.getCountry()).getCountry());
+            humanToSave.setCountry(countryList.get(humanBean.getCountry()));
         }
         model.addAttribute("countries", countryList);
         humanList.add(humanToSave);
