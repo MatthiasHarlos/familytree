@@ -30,6 +30,7 @@ public class FamilyTreeController {
 
     @PostMapping("changing")
     public String changingTree (Human human) {
+        humanList.get(human.getListNumber()).setLastName(human.getLastName());
 
         System.out.println(human);
         return "redirect:familyTree";
@@ -69,6 +70,7 @@ public class FamilyTreeController {
         }
 
         humanList.add(humanToSave);
+        humanToSave.setListNumber(humanList.indexOf(humanToSave));
         System.out.println(humanList);
         model.addAttribute("humanList", humanList);
         return "input-template";

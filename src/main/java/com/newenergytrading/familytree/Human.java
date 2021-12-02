@@ -13,6 +13,7 @@ public class Human {
     private List<Human> siblings = new ArrayList<>();
     private CountryForm country;
     private String gender;
+    private int listNumber;
 
     public String getFamilyTreeSiblings() {
         String siblingString = "";
@@ -33,23 +34,23 @@ public class Human {
         }
         if (this.mother == null && this.father == null) {
             return "<li>\n" +
-                    "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
+                    "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + " " + this.getLastName() + "</a>\n" + this.getFamilyTreeSiblings() +
                     "</li>";
         } else if (this.mother != null && this.father != null)  {
             String ancestorsMother = this.mother.getFamilyTree();
             String ancestorsFather = this.father.getFamilyTree();
             return "<li>\n" +
-                    "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
+                    "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + " " + this.getLastName() + "</a>\n" + this.getFamilyTreeSiblings() +
                     "<ul>" + ancestorsMother + ancestorsFather + "</ul>" +
                     "</li>";
         } else if (this.mother != null) {
             return "<li>\n" +
-                    "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
+                    "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + " " + this.getLastName() + "</a>\n" + this.getFamilyTreeSiblings() +
                     "<ul>" +  this.mother.getFamilyTree() + "</ul>" +
                     "</li>";
         } else {
              return "<li>\n" +
-                     "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
+                     "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + " " + this.getLastName() + "</a>\n" + this.getFamilyTreeSiblings() +
                      "<ul>" + this.father.getFamilyTree()  + "</ul>" +
                     "</li>";
         }
@@ -102,7 +103,8 @@ public class Human {
                     "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
                     "        <h1>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input th:field='*{lastName}' type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+                    "        <input th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+                    "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"number\" name=\"listNumber\" hidden>\n" +
 
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
                     "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
@@ -113,11 +115,11 @@ public class Human {
             String ancestorsFather = this.father.getInfoPopUp();
             return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
                     "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
-                    "        <h1>"+ this.getFirstName() +"</h1>\n" +
+                    "        <h1 th:field='*{listNumber}' value='" + this.listNumber + "'>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input th:field='*{lastName}' type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
-                    "        <label for=\"psw\"><b>Land</b></label>\n" +
-                    "        <input th:field='*{country.setCountry()}' type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"country\">\n" +
+                    "        <input th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+                    "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"number\"  name=\"listNumber\" hidden>\n" +
+
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
                     "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
                     "    </form>\n" +
@@ -126,11 +128,11 @@ public class Human {
         } else if (this.mother != null) {
             return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
                     "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
-                    "        <h1>"+ this.getFirstName() +"</h1>\n" +
+                    "        <h1 th:field='*{listNumber}' th:value='" + this.listNumber + "'>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input th:field='*{lastName}' type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
-                    "        <label for=\"psw\"><b>Land</b></label>\n" +
-                    "        <input th:field='*{country.setCountry()}' type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"country\">\n" +
+                    "        <input th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+                    "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"text\"  name=\"listNumber\" hidden>\n" +
+
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
                     "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
                     "    </form>\n" +
@@ -138,11 +140,11 @@ public class Human {
         } else {
             return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
                     "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
-                    "        <h1>"+ this.getFirstName() +"</h1>\n" +
+                    "        <h1 th:field='*{listNumber}' th:value='" + this.listNumber + "'>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input th:field='*{lastName}' type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
-                    "        <label for=\"psw\"><b>Land</b></label>\n" +
-                    "        <input th:field='*{country.setCountry()}' type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"country\">\n" +
+                    "        <input th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+                    "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"text\"  name=\"listNumber\" hidden>\n" +
+
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
                     "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
                     "    </form>\n" +
@@ -303,7 +305,8 @@ public class Human {
                 ", mother=" + mother +
                 ", father=" + father +
                 ", siblings=" + siblings +
-                ", country='" + country + '\'' +
+                ", country=" + country +
+                ", listNumber=" + listNumber +
                 '}';
     }
 
@@ -321,5 +324,13 @@ public class Human {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public int getListNumber() {
+        return listNumber;
+    }
+
+    public void setListNumber(int listNumber) {
+        this.listNumber = listNumber;
     }
 }
