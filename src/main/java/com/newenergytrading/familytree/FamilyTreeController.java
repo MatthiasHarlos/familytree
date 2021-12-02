@@ -2,11 +2,16 @@ package com.newenergytrading.familytree;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class FamilyTreeController {
@@ -24,8 +29,18 @@ public class FamilyTreeController {
     }
 
     @PostMapping("saveHumanBean")
-    public String saveHuman(Model model, HumanBean humanBean) {
+    public String saveHuman(@Valid @ModelAttribute("humanBean") HumanBean humanBean, BindingResult bindingResult, Model model) {
         model.addAttribute("humanBeanToSave", new HumanBean());
+        model.addAttribute("countries", countryList);
+        //validate(humanBean, bindingResult);
+        System.out.println(bindingResult);
+       if (bindingResult.hasErrors()) {
+           model.addAttribute("fail", 1);
+           return "input-template";
+       }
+       else {
+           model.addAttribute("fail", 0);
+       }
         Human humanToSave = new Human(humanBean.getAge(), humanBean.getFirstName(), humanBean.getLastName());
         if (humanBean.getMotherIndex() != null) {
             humanToSave.setMother(humanList.get(humanBean.getMotherIndex()));
@@ -45,15 +60,30 @@ public class FamilyTreeController {
         if (humanBean.getGender() != null) {
             humanToSave.setGender(genderColors.get(humanBean.getGender()));
         }
-        model.addAttribute("countries", countryList);
+
         humanList.add(humanToSave);
         System.out.println(humanList);
         model.addAttribute("humanList", humanList);
         return "input-template";
     }
 
+   private void validate(HumanBean humanBean, BindingResult bindingResult) {
+        Objects.requireNonNull(humanBean);
+        Objects.requireNonNull(bindingResult);
+        if (!bindingResult.hasFieldErrors("country")) {
+            try {
+                new HumanBean(humanBean.getCountry());
+            } catch (IllegalArgumentException e) {
+               bindingResult.rejectValue("country", "invalid.country", "Lege ein Land an!");
+            }
+        }
+    }
+
     @GetMapping("familyTree")
     public String familyTreeOutput(Model model) {
+        if (humanList.size() < 1) {
+            return "redirect:/";
+        }
         model.addAttribute("familyTree", humanList.get(humanList.size()-1).getFamilyTree());
         model.addAttribute("popUpTree", humanList.get(humanList.size()-1).getInfoPopUp());
         model.addAttribute("scriptPopUp", humanList.get(humanList.size()-1).getScript());

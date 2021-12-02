@@ -56,11 +56,14 @@
         <option value="2">beides</option>
     </select>
     <a href="http://localhost:8080/saveCountry" style="font-size: 10px">Länder hinzufügen</a>
-    <select th:if="${countries.size() > 0}" th:field="*{country}">
-        <option th:each="country : ${countries}"
+    <select for="country"   th:if="${countries.size() > 0}" th:field="*{country}" >
+        <option  th:each="country : ${countries}"
                 th:text="${country.country}"
                 th:value="${countries.indexOf(country)}"></option>
     </select>
+    <p th:if="${fail == 1}">
+        Bitte füge noch ein Land hinzu!
+    </p>
     <select th:field="*{motherIndex}">
         <option th:value="${null}"> </option>
         <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>

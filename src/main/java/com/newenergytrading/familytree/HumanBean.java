@@ -1,5 +1,10 @@
 package com.newenergytrading.familytree;
 
+import org.springframework.lang.NonNull;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +15,21 @@ public class HumanBean {
     private Integer motherIndex;
     private Integer fatherIndex;
     private List<Integer> siblingsIndex = new ArrayList<>();
+    @NotNull(message = "Bitte wähle ein Land!")
     private Integer country;
     private Integer gender;
 
 
+    public HumanBean() {
+
+    }
+
+    public HumanBean( Integer country) {
+        if(country == null) {
+            throw new IllegalArgumentException();
+        }
+        this.country = country;
+    }
 
     public int getAge() {
         return age;
