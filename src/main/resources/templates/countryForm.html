@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Länder</title>
+</head>
+<body>
+<form method="post" action="saveCountry" th:object="${countryToSave}">
+    <input type="text" th:field="*{country}">
+    <select th:field="*{continent}">
+        <option value="0">Europa</option>
+        <option value="1">Asien</option>
+        <option value="2">Australien</option>
+        <option value="3">Amerika</option>
+        <option value="4">Afrika</option>
+    </select>
+    <button type="submit">Speichern!</button>
+</form>
+</body>
+</html>

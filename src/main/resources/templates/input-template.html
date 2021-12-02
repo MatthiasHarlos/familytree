@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Stammbaum</title>
+    <style>
+       .multipleSelection {
+            width: 180px;
+            background-color: #BCC2C1;
+            position: fixed;
+        }
+
+        .selectBox {
+            position: relative;
+        }
+
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #checkBoxes {
+            display: none;
+            border: 1px #8DF5E4 solid;
+        }
+
+        #checkBoxes label {
+            display: block;
+        }
+
+        #checkBoxes label:hover {
+            background-color: #4F615E;
+        }
+    </style>
+</head>
+<body>
+<form method="post" action="saveHumanBean" th:object="${humanBeanToSave}">
+    <input th:field="*{age}" type="number" placeholder="Alter">
+    <input th:field="*{firstName}" type="text" placeholder="Vorname">
+    <input th:field="*{lastName}" type="text" placeholder="Nachname">
+    <select th:field="*{country}">
+        <option th:each="country : ${countries}"
+                th:text="${country.country}"
+                th:value="${countries.indexOf(country)}"></option>
+    </select>
+    <select th:field="*{motherIndex}">
+        <option th:value="${null}"> </option>
+        <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+    </select>
+    <select th:field="*{fatherIndex}">
+        <option th:value="${null}"> </option>
+        <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+    </select>
+    <span class="multipleSelection">
+        <div class="selectBox"
+             onclick="showCheckboxes()">
+    <select>
+        <option>Wähle Geschwister:</option>
+    </select>
+            <div class="overSelect"></div>
+        </div>
+        <div id="checkBoxes">
+            <label >
+                <input th:field="*{siblingsIndex}" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}" type="checkbox"/>
+            </label>
+        </div>
+    </span>
+    <script>
+        var show = true;
+        function showCheckboxes() {
+            var checkboxes =
+                document.getElementById("checkBoxes");
+            if (show) {
+                checkboxes.style.display = "block";
+                show = false;
+            } else {
+                checkboxes.style.display = "none";
+                show = true;
+            }
+        }
+    </script>
+    <button type="submit" style="position: relative; margin-left: 12%">speichern</button>
+</form>
+<form method="get" action="familyTree">
+    <button type="submit">Familienbaum erzeugen!</button>
+</form>
+</body>
+</html>

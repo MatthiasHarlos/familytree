@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Stammbaum</title>
+</head>
+<body>
+
+<form method="post" action="saveHumanBean" th:object="${humanBeanToSave}">
+    <input th:field="*{age}" type="number">
+    <input th:field="*{firstName}" type="text">
+    <input th:field="*{lastName}" type="text">
+    <select th:field="*{motherIndex}">
+        <option th:value="${null}"> </option>
+        <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+    </select>
+    <select th:field="*{fatherIndex}">
+        <option th:value="${null}"> </option>
+        <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+    </select>
+    <button type="submit">speichern</button>
+</form>
+<form method="get" action="familyTree">
+    <button type="submit">Familienbaum erzeugen!</button>
+</form>
+
+
+</body>
+</html>
