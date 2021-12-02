@@ -18,7 +18,7 @@ public class Human {
         String siblingString = "";
         if (this.siblings != null) {
             for (Human human : this.siblings) {
-                siblingString += "<span href=\"#\">" +
+                siblingString += "<span href=\"#\" style='background-color:silver'>" +
                         human.getFirstName() + "</span>";
             }
             return siblingString;
@@ -33,25 +33,121 @@ public class Human {
         }
         if (this.mother == null && this.father == null) {
             return "<li>\n" +
-                    "<a href=\"#\"" + genderColor + ">" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
+                    "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
                     "</li>";
         } else if (this.mother != null && this.father != null)  {
             String ancestorsMother = this.mother.getFamilyTree();
             String ancestorsFather = this.father.getFamilyTree();
             return "<li>\n" +
-                    "<a href=\"#\">" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
+                    "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
                     "<ul>" + ancestorsMother + ancestorsFather + "</ul>" +
                     "</li>";
         } else if (this.mother != null) {
             return "<li>\n" +
-                    "<a href=\"#\">" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
+                    "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
                     "<ul>" +  this.mother.getFamilyTree() + "</ul>" +
                     "</li>";
         } else {
              return "<li>\n" +
-                     "<a href=\"#\">" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
-                    "<ul>" + this.father.getFamilyTree()  + "</ul>" +
+                     "<a href=\"#\"" + genderColor + " class='open-button' onclick='openForm" + this.getFirstName() + this.getLastName() + "()'>" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
+                     "<ul>" + this.father.getFamilyTree()  + "</ul>" +
                     "</li>";
+        }
+    }
+
+    public String getScript() {
+        if (this.mother == null && this.father == null) {
+            return "function openForm" + this.getFirstName() + this.getLastName() + "() {\n" +
+                    "  document.getElementById('myForm" + this.getFirstName() + this.getLastName() + "').style.display = \"block\";\n" +
+                    "}\n" +
+                    "\n" +
+                    "function closeForm" + this.getFirstName() + this.getLastName() + "() {\n" +
+                    "  document.getElementById('myForm" + this.getFirstName() + this.getLastName() + "').style.display = \"none\";\n" +
+                    "}\n";
+        } else if (this.mother != null && this.father != null)  {
+            String ancestorsMother = this.mother.getScript();
+            String ancestorsFather = this.father.getScript();
+            return "function openForm" + this.getFirstName() + this.getLastName() + "() {\n" +
+                    "  document.getElementById('myForm" + this.getFirstName() + this.getLastName() + "').style.display = \"block\";\n" +
+                    "}\n" +
+                    "\n" +
+                    "function closeForm" + this.getFirstName() + this.getLastName() + "() {\n" +
+                    "  document.getElementById('myForm" + this.getFirstName() + this.getLastName() + "').style.display = \"none\";\n" +
+                    "}\n" + ancestorsMother + ancestorsFather;
+        }
+        else if (this.mother != null) {
+            return "function openForm" + this.getFirstName() + this.getLastName() + "() {\n" +
+                    "  document.getElementById('myForm" + this.getFirstName() + this.getLastName() + "').style.display = \"block\";\n" +
+                    "}\n" +
+                    "\n" +
+                    "function closeForm" + this.getFirstName() + this.getLastName() + "() {\n" +
+                    "  document.getElementById('myForm" + this.getFirstName() + this.getLastName() + "').style.display = \"none\";\n" +
+                    "}\n" + this.mother.getScript();
+        }
+        else {
+            return "function openForm" + this.getFirstName() + this.getLastName() + "() {\n" +
+                    "  document.getElementById('myForm" + this.getFirstName() + this.getLastName() + "').style.display = \"block\";\n" +
+                    "}\n" +
+                    "\n" +
+                    "function closeForm" + this.getFirstName() + this.getLastName() + "() {\n" +
+                    "  document.getElementById('myForm" + this.getFirstName() + this.getLastName() + "').style.display = \"none\";\n" +
+                    "}\n" + this.father.getScript();
+        }
+
+    }
+
+    public String getInfoPopUp() {
+        if (this.mother == null && this.father == null) {
+            return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
+                    "    <form action=\"/changing\" class=\"form-container\">\n" +
+                    "        <h1>"+ this.getFirstName() +"</h1>\n" +
+                    "        <label for=\"email\"><b>Nachname</b></label>\n" +
+                    "        <input type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"email\">\n" +
+                    "        <label for=\"psw\"><b>Land</b></label>\n" +
+                    "        <input type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"psw\">\n" +
+                    "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
+                    "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
+                    "    </form>\n" +
+                    "</div>";
+        } else if (this.mother != null && this.father != null)  {
+            String ancestorsMother = this.mother.getInfoPopUp();
+            String ancestorsFather = this.father.getInfoPopUp();
+            return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
+                    "    <form action=\"/changing\" class=\"form-container\">\n" +
+                    "        <h1>"+ this.getFirstName() +"</h1>\n" +
+                    "        <label for=\"email\"><b>Nachname</b></label>\n" +
+                    "        <input type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"email\">\n" +
+                    "        <label for=\"psw\"><b>Land</b></label>\n" +
+                    "        <input type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"psw\">\n" +
+                    "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
+                    "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
+                    "    </form>\n" +
+                    "</div>" +
+                    ancestorsMother + ancestorsFather;
+        } else if (this.mother != null) {
+            return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
+                    "    <form action=\"/changing\" class=\"form-container\">\n" +
+                    "        <h1>"+ this.getFirstName() +"</h1>\n" +
+                    "        <label for=\"email\"><b>Nachname</b></label>\n" +
+                    "        <input type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"email\">\n" +
+                    "        <label for=\"psw\"><b>Land</b></label>\n" +
+                    "        <input type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"psw\">\n" +
+                    "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
+                    "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
+                    "    </form>\n" +
+                    "</div>" + this.mother.getInfoPopUp();
+        } else {
+            return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
+                    "    <form action=\"/changing\" class=\"form-container\">\n" +
+                    "        <h1>"+ this.getFirstName() +"</h1>\n" +
+                    "        <label for=\"email\"><b>Nachname</b></label>\n" +
+                    "        <input type=\"text\" placeholder=\"" + this.getLastName() + "\" name=\"email\">\n" +
+                    "        <label for=\"psw\"><b>Land</b></label>\n" +
+                    "        <input type=\"text\" placeholder=\"" + this.getCountry().getCountry() + "\" name=\"psw\">\n" +
+                    "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
+                    "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
+                    "    </form>\n" +
+                    "</div>" + this.father.getInfoPopUp();
         }
     }
 

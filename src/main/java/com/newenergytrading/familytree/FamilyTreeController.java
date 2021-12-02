@@ -13,7 +13,7 @@ public class FamilyTreeController {
 
     private static List<Human> humanList = new ArrayList<>();
     private static List<CountryForm> countryList = new ArrayList<>();
-    private static List<String> genderColors = List.of("style='background-color:grey'", "style='background-color:red'", "style='background-color:blue'");
+    private static List<String> genderColors = List.of("style='background-color:green'", "style='background-color:red'", "style='background-color:blue'");
 
     @GetMapping("/")
     public String inputForm(Model model) {
@@ -55,6 +55,8 @@ public class FamilyTreeController {
     @GetMapping("familyTree")
     public String familyTreeOutput(Model model) {
         model.addAttribute("familyTree", humanList.get(humanList.size()-1).getFamilyTree());
+        model.addAttribute("popUpTree", humanList.get(humanList.size()-1).getInfoPopUp());
+        model.addAttribute("scriptPopUp", humanList.get(humanList.size()-1).getScript());
         return "output-template";
     }
 

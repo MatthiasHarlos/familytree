@@ -3,7 +3,7 @@ package com.newenergytrading.familytree;
 public class CountryForm {
 
     private String country;
-    private Integer continent;
+    private String continent;
 
     public String getCountry() {
         return country;
@@ -13,11 +13,11 @@ public class CountryForm {
         this.country = country;
     }
 
-    public Integer getContinent() {
+    public String getContinent() {
         return continent;
     }
 
-    public void setContinent(Integer continent) {
+    public void setContinent(String continent) {
         this.continent = continent;
     }
 

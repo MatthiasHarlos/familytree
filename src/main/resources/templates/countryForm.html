@@ -8,11 +8,11 @@
 <form method="post" action="saveCountry" th:object="${countryToSave}">
     <input type="text" th:field="*{country}">
     <select th:field="*{continent}">
-        <option value="0">Europa</option>
-        <option value="1">Asien</option>
-        <option value="2">Australien</option>
-        <option value="3">Amerika</option>
-        <option value="4">Afrika</option>
+        <option value="Europa">Europa</option>
+        <option value="Asien">Asien</option>
+        <option value="Australien">Australien</option>
+        <option value="Amerika">Amerika</option>
+        <option value="Afrika">Afrika</option>
     </select>
     <button type="submit">Speichern!</button>
     <a href="http://localhost:8080/" style="font-size: 12px">zurück!</a>
