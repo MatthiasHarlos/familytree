@@ -13,6 +13,7 @@ public class FamilyTreeController {
 
     private static List<Human> humanList = new ArrayList<>();
     private static List<CountryForm> countryList = new ArrayList<>();
+    private static List<String> genderColors = List.of("style='background-color:grey'", "style='background-color:red'", "style='background-color:blue'");
 
     @GetMapping("/")
     public String inputForm(Model model) {
@@ -40,6 +41,9 @@ public class FamilyTreeController {
         }
         if (humanBean.getCountry() != null) {
             humanToSave.setCountry(countryList.get(humanBean.getCountry()));
+        }
+        if (humanBean.getGender() != null) {
+            humanToSave.setGender(genderColors.get(humanBean.getGender()));
         }
         model.addAttribute("countries", countryList);
         humanList.add(humanToSave);

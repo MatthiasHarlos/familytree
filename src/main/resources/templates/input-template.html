@@ -46,6 +46,11 @@
     <input th:field="*{age}" type="number" placeholder="Alter">
     <input th:field="*{firstName}" type="text" placeholder="Vorname">
     <input th:field="*{lastName}" type="text" placeholder="Nachname">
+    <select th:field="*{gender}">
+        <option value="0">männlich</option>
+        <option value="1">weiblich</option>
+        <option value="2">beides</option>
+    </select>
     <a href="http://localhost:8080/saveCountry" style="font-size: 10px">Länder hinzufügen</a>
     <select th:if="${countries.size() > 0}" th:field="*{country}">
         <option th:each="country : ${countries}"

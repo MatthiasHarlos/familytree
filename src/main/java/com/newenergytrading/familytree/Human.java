@@ -12,6 +12,7 @@ public class Human {
     private Human father;
     private List<Human> siblings = new ArrayList<>();
     private CountryForm country;
+    private String gender;
 
     public String getFamilyTreeSiblings() {
         String siblingString = "";
@@ -26,9 +27,13 @@ public class Human {
     }
 
     public String getFamilyTree() {
+        String genderColor = "";
+        if (gender != null) {
+            genderColor = gender;
+        }
         if (this.mother == null && this.father == null) {
             return "<li>\n" +
-                    "<a href=\"#\">" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
+                    "<a href=\"#\"" + genderColor + ">" + this.getFirstName() + "</a>\n" + this.getFamilyTreeSiblings() +
                     "</li>";
         } else if (this.mother != null && this.father != null)  {
             String ancestorsMother = this.mother.getFamilyTree();
@@ -209,5 +214,13 @@ public class Human {
 
     public void setCountry(CountryForm country) {
         this.country = country;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

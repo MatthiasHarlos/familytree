@@ -11,6 +11,7 @@ public class HumanBean {
     private Integer fatherIndex;
     private List<Integer> siblingsIndex = new ArrayList<>();
     private Integer country;
+    private Integer gender;
 
 
 
@@ -68,5 +69,13 @@ public class HumanBean {
 
     public void setCountry(Integer country) {
         this.country = country;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 }
