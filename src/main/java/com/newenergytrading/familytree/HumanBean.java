@@ -17,6 +17,8 @@ public class HumanBean {
     private Integer country;
     private Integer gender;
 
+    private int listNumber;
+
 
     public HumanBean() {
 
@@ -91,5 +93,28 @@ public class HumanBean {
 
     public void setGender(Integer gender) {
         this.gender = gender;
+    }
+
+    public int getListNumber() {
+        return listNumber;
+    }
+
+    public void setListNumber(int listNumber) {
+        this.listNumber = listNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "HumanBean{" +
+                "age=" + age +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", motherIndex=" + motherIndex +
+                ", fatherIndex=" + fatherIndex +
+                ", siblingsIndex=" + siblingsIndex +
+                ", country=" + country +
+                ", gender=" + gender +
+                ", listNumber=" + listNumber +
+                '}';
     }
 }

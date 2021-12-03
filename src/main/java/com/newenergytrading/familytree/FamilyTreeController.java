@@ -27,10 +27,26 @@ public class FamilyTreeController {
     }
 
     @PostMapping("changing")
-    public String changingTree (Human human) {
-        humanList.get(human.getListNumber()).setLastName(human.getLastName());
+    public String changingTree (HumanBean humanBean) {
+        Human human = humanList.get(humanBean.getListNumber());
+        human.setFirstName(humanBean.getFirstName());
+        human.setLastName(humanBean.getLastName());
+        if (humanBean.getMotherIndex() != null && humanBean.getMotherIndex() < humanBean.getListNumber()) {
+                human.setMother(humanList.get(humanBean.getMotherIndex()));
+        }
+        if (humanBean.getFatherIndex() != null && humanBean.getFatherIndex() < humanBean.getListNumber()) {
+            human.setFather(humanList.get(humanBean.getFatherIndex()));
+        }
+        if (humanBean.getSiblingsIndex() != null) {
+            for (int i = 0; i < humanBean.getSiblingsIndex().size(); i++) {
+                System.out.println(i);
+                human.getSiblings().add(humanList.get(humanBean.getSiblingsIndex().get(i)));
+            }
+        }
 
-        System.out.println(human);
+        humanList.set(humanBean.getListNumber(), human);
+
+        System.out.println(humanBean);
         return "redirect:familyTree";
     }
 
@@ -90,8 +106,8 @@ public class FamilyTreeController {
             return "redirect:/";
         }
         model.addAttribute("familyTree", humanList.get(humanList.size()-1).getFamilyTree());
-        model.addAttribute("popUpTree", humanList.get(humanList.size()-1).getInfoPopUp());
         model.addAttribute("scriptPopUp", humanList.get(humanList.size()-1).getScript());
+        model.addAttribute("humanList", humanList);
         return "output-template";
     }
 

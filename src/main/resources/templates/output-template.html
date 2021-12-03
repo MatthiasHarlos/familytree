@@ -191,6 +191,52 @@ border: 1px solid black;
 background-color: silver;
 }
 
+.positionizer {
+    position: relative;
+    margin: 0 auto;
+
+  z-index: 11;
+
+    text-align: center;
+    margin-left: -260px;
+    }
+       .multipleSelection {
+            width: 180px;
+            background-color: #BCC2C1;
+            position: absolute;
+        }
+
+        .selectBox {
+            position: relative;
+            z-index: 12;
+        }
+
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #checkBoxes {
+            display: none;
+            border: 1px #8DF5E4 solid;
+        }
+
+        #checkBoxes label {
+            display: block;
+        }
+
+        #checkBoxes label:hover {
+            background-color: #4F615E;
+        }
+
     </style>
 </head>
 <body>
@@ -202,7 +248,62 @@ background-color: silver;
     </ul>
 </div>
 </div>
-<div th:utext="${popUpTree}"></div>
+
+<div class="form-popup" th:id="myForm + ${human.firstName + human.lastName}" th:each=" human : ${humanList}">
+ <form method='post' action="/changing" th:object="${humanBeanToSave}" class="form-container">
+     <h1 th:text="${human.firstName + ' ' + human.lastName}"></h1>
+       <label ><b>Name</b></label>
+        <input onkeypress='return /[a-z]/i.test(event.key)' id='firstName' type="text"  th:value="${human.firstName}" name="firstName">
+        <input onkeypress='return /[a-z]/i.test(event.key)' id='lastName' type="text" th:value="${human.lastName}" name="lastName">
+        <input id='listNumber' th:value="${human.listNumber}" type="number" name="listNumber" hidden>
+
+<select id="motherIndex" name='motherIndex'>
+        <option th:value="${null}"> </option>
+        <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+    </select>
+    <select id="fatherIndex" name="fatherIndex">
+        <option th:value="${null}"> </option>
+        <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+    </select>
+
+     <div class="positionizer">
+    <span class="multipleSelection">
+        <div class="selectBox"
+             onclick="showCheckboxes()">
+    <select>
+        <option>Wähle Geschwister:</option>
+    </select>
+            <div class="overSelect"></div>
+        </div>
+        <div id="checkBoxes">
+            <label >
+                <input id="siblingsIndex" name="siblingsIndex" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}" type="checkbox"/>
+            </label>
+        </div>
+    </span>
+     </div>
+     <div style="margin-top: 10%">
+        <button type="submit" class="btn">Ändern</button>
+        <span th:utext="${human.getCloseButton()}"></span>
+     </div>
+    </form>
+</div>
+
+<script>
+        var show = true;
+        function showCheckboxes() {
+            var checkboxes =
+                document.getElementById("checkBoxes");
+            if (show) {
+                checkboxes.style.display = "block";
+                show = false;
+            } else {
+                checkboxes.style.display = "none";
+                show = true;
+            }
+        }
+    </script>
+
 
 <script th:utext="${scriptPopUp}">
 </script>

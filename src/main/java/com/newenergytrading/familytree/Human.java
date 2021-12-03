@@ -14,6 +14,7 @@ public class Human {
     private CountryForm country;
     private String gender;
     private int listNumber;
+    private String closeButton;
 
     public String getFamilyTreeSiblings() {
         String siblingString = "";
@@ -54,6 +55,11 @@ public class Human {
                      "<ul>" + this.father.getFamilyTree()  + "</ul>" +
                     "</li>";
         }
+    }
+
+    public String getCloseButton() {
+        return "\n" +
+                "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.firstName + this.lastName + "()\">Schließen</button>";
     }
 
     public String getScript() {
@@ -97,60 +103,6 @@ public class Human {
 
     }
 
-    public String getInfoPopUp() {
-        if (this.mother == null && this.father == null) {
-            return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
-                    "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
-                    "        <h1>"+ this.getFirstName() +"</h1>\n" +
-                    "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input onkeypress='return /[a-z]/i.test(event.key)' th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
-                    "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"number\" name=\"listNumber\" hidden>\n" +
-
-                    "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
-                    "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
-                    "    </form>\n" +
-                    "</div>";
-        } else if (this.mother != null && this.father != null)  {
-            String ancestorsMother = this.mother.getInfoPopUp();
-            String ancestorsFather = this.father.getInfoPopUp();
-            return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
-                    "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
-                    "        <h1 th:field='*{listNumber}' value='" + this.listNumber + "'>"+ this.getFirstName() +"</h1>\n" +
-                    "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input onkeypress='return /[a-z]/i.test(event.key)' th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
-                    "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"number\"  name=\"listNumber\" hidden>\n" +
-
-                    "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
-                    "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
-                    "    </form>\n" +
-                    "</div>" +
-                    ancestorsMother + ancestorsFather;
-        } else if (this.mother != null) {
-            return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
-                    "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
-                    "        <h1 th:field='*{listNumber}' th:value='" + this.listNumber + "'>"+ this.getFirstName() +"</h1>\n" +
-                    "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input onkeypress='return /[a-z]/i.test(event.key)' th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
-                    "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"text\"  name=\"listNumber\" hidden>\n" +
-
-                    "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
-                    "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
-                    "    </form>\n" +
-                    "</div>" + this.mother.getInfoPopUp();
-        } else {
-            return "<div class=\"form-popup\" id=\"myForm" + this.getFirstName() + this.getLastName() + "\">\n" +
-                    "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
-                    "        <h1 th:field='*{listNumber}' th:value='" + this.listNumber + "'>"+ this.getFirstName() +"</h1>\n" +
-                    "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input onkeypress='return /[a-z]/i.test(event.key)' th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
-                    "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"text\"  name=\"listNumber\" hidden>\n" +
-
-                    "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
-                    "        <button type=\"button\" class=\"btn cancel\" onclick=\"closeForm" + this.getFirstName() + this.getLastName() +"()\">Schließen</button>\n" +
-                    "    </form>\n" +
-                    "</div>" + this.father.getInfoPopUp();
-        }
-    }
 
     public Human(int age, String firstName,  Human mother, Human father) {
         this.age = age;
@@ -296,19 +248,7 @@ public class Human {
         this.father = father;
     }
 
-    @Override
-    public String toString() {
-        return "Human{" +
-                "age=" + age +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", mother=" + mother +
-                ", father=" + father +
-                ", siblings=" + siblings +
-                ", country=" + country +
-                ", listNumber=" + listNumber +
-                '}';
-    }
+
 
     public CountryForm getCountry() {
         return country;
