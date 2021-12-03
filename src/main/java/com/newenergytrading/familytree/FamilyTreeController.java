@@ -3,11 +3,9 @@ package com.newenergytrading.familytree;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,36 +35,35 @@ public class FamilyTreeController {
     }
 
     @PostMapping("saveHumanBean")
-    public String saveHuman(@Valid @ModelAttribute("humanBean") HumanBean humanBean, BindingResult bindingResult, Model model) {
-        model.addAttribute("humanBeanToSave", new HumanBean());
+    public String saveHuman(@Valid @ModelAttribute("humanBeanToSave") HumanBean humanBeanToSave, BindingResult bindingResult, Model model) {
+        //validate(humanBeanToSave, bindingResult);
         model.addAttribute("countries", countryList);
-        //validate(humanBean, bindingResult);
         System.out.println(bindingResult);
-       if (bindingResult.hasErrors()) {
-           model.addAttribute("fail", 1);
-           return "input-template";
-       }
-       else {
-           model.addAttribute("fail", 0);
-       }
-        Human humanToSave = new Human(humanBean.getAge(), humanBean.getFirstName(), humanBean.getLastName());
-        if (humanBean.getMotherIndex() != null) {
-            humanToSave.setMother(humanList.get(humanBean.getMotherIndex()));
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("humanBeanToSave", humanBeanToSave);
+            return "input-template";
         }
-        if (humanBean.getFatherIndex() != null) {
-            humanToSave.setFather(humanList.get(humanBean.getFatherIndex()));
+
+        model.addAttribute("humanBeanToSave", new HumanBean());
+
+        Human humanToSave = new Human(humanBeanToSave.getAge(), humanBeanToSave.getFirstName(), humanBeanToSave.getLastName());
+        if (humanBeanToSave.getMotherIndex() != null) {
+            humanToSave.setMother(humanList.get(humanBeanToSave.getMotherIndex()));
         }
-        if (humanBean.getSiblingsIndex() != null) {
-            for (int i = 0; i < humanBean.getSiblingsIndex().size(); i++) {
+        if (humanBeanToSave.getFatherIndex() != null) {
+            humanToSave.setFather(humanList.get(humanBeanToSave.getFatherIndex()));
+        }
+        if (humanBeanToSave.getSiblingsIndex() != null) {
+            for (int i = 0; i < humanBeanToSave.getSiblingsIndex().size(); i++) {
                 System.out.println(i);
-                humanToSave.getSiblings().add(humanList.get(humanBean.getSiblingsIndex().get(i)));
+                humanToSave.getSiblings().add(humanList.get(humanBeanToSave.getSiblingsIndex().get(i)));
             }
         }
-        if (humanBean.getCountry() != null) {
-            humanToSave.setCountry(countryList.get(humanBean.getCountry()));
+        if (humanBeanToSave.getCountry() != null) {
+            humanToSave.setCountry(countryList.get(humanBeanToSave.getCountry()));
         }
-        if (humanBean.getGender() != null) {
-            humanToSave.setGender(genderColors.get(humanBean.getGender()));
+        if (humanBeanToSave.getGender() != null) {
+            humanToSave.setGender(genderColors.get(humanBeanToSave.getGender()));
         }
 
         humanList.add(humanToSave);
@@ -77,9 +74,8 @@ public class FamilyTreeController {
     }
 
    private void validate(HumanBean humanBean, BindingResult bindingResult) {
-        Objects.requireNonNull(humanBean);
         Objects.requireNonNull(bindingResult);
-        if (!bindingResult.hasFieldErrors("country")) {
+        if (bindingResult.hasFieldErrors("country")) {
             try {
                 new HumanBean(humanBean.getCountry());
             } catch (IllegalArgumentException e) {

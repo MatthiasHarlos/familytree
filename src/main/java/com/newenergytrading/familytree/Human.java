@@ -103,7 +103,7 @@ public class Human {
                     "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
                     "        <h1>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+                    "        <input onkeypress='return /[a-z]/i.test(event.key)' th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
                     "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"number\" name=\"listNumber\" hidden>\n" +
 
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
@@ -117,7 +117,7 @@ public class Human {
                     "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
                     "        <h1 th:field='*{listNumber}' value='" + this.listNumber + "'>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+                    "        <input onkeypress='return /[a-z]/i.test(event.key)' th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
                     "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"number\"  name=\"listNumber\" hidden>\n" +
 
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
@@ -130,7 +130,7 @@ public class Human {
                     "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
                     "        <h1 th:field='*{listNumber}' th:value='" + this.listNumber + "'>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+                    "        <input onkeypress='return /[a-z]/i.test(event.key)' th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
                     "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"text\"  name=\"listNumber\" hidden>\n" +
 
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +
@@ -142,7 +142,7 @@ public class Human {
                     "    <form method='post' action=\"/changing\" th:object=\"${humanToSave}\" class=\"form-container\">\n" +
                     "        <h1 th:field='*{listNumber}' th:value='" + this.listNumber + "'>"+ this.getFirstName() +"</h1>\n" +
                     "        <label for=\"email\"><b>Nachname</b></label>\n" +
-                    "        <input th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
+                    "        <input onkeypress='return /[a-z]/i.test(event.key)' th:field='*{lastName}' type=\"text\" value=\"" + this.getLastName() + "\" name=\"lastName\">\n" +
                     "        <input th:field='*{listNumber}' value='" + this.listNumber + "' type=\"text\"  name=\"listNumber\" hidden>\n" +
 
                     "        <button type=\"submit\" class=\"btn\">Ändern</button>\n" +

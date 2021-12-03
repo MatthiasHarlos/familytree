@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HumanBean {
-    private int age;
+
+    @NotNull(message = "Bitte wähle ein Alter")
+    private Integer age;
     private String firstName;
     private String lastName;
     private Integer motherIndex;
     private Integer fatherIndex;
     private List<Integer> siblingsIndex = new ArrayList<>();
-    @NotNull(message = "Bitte wähle ein Land!")
+    @NotNull(message = "Bitte wähle zuerst ein Land aus!")
     private Integer country;
     private Integer gender;
 
@@ -27,11 +29,11 @@ public class HumanBean {
         this.country = country;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

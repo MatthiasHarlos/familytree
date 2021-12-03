@@ -8,6 +8,8 @@
     body {
     margin: 0 auto;
     text-align: center;
+    margin-top: 5%;
+    background-color: grey;
     }
 
     .center {
@@ -184,20 +186,26 @@
   opacity: 1;
 }
 
+.familyTree{
+border: 1px solid black;
+background-color: silver;
+}
+
     </style>
 </head>
 <body>
+<div class="familyTree">
 <h2>Ihr Familien-Stammbaum:</h2>
 
-<div class="tree center">
+<div class="tree center ">
     <ul th:utext="${familyTree}">
     </ul>
+</div>
 </div>
 <div th:utext="${popUpTree}"></div>
 
 <script th:utext="${scriptPopUp}">
 </script>
-
 
 </body>
 </html>

@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Länder</title>
+    <style>
+        body {
+        margin: 0 auto;
+        margin-top: 5%;
+        text-align: center;
+        background-color: grey;
+        margin-bottom: 2.5%;
+        }
+        .formular {
+        background-color: silver;
+        border: 1px solid black;
+        height: 200px;
+        }
+
+
+    </style>
 </head>
 <body>
+<div class="formular">
+<h2 style="margin-top: 4.5%">Speichere die Heimatländer deiner Familie</h2>
 <form method="post" action="saveCountry" th:object="${countryToSave}">
     <input type="text" th:field="*{country}">
     <select th:field="*{continent}">
@@ -17,5 +35,6 @@
     <button type="submit">Speichern!</button>
     <a href="http://localhost:8080/" style="font-size: 12px">zurück!</a>
 </form>
+</div>
 </body>
 </html>

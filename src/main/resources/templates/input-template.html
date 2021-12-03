@@ -1,17 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <title>Stammbaum</title>
     <style>
+    body {
+    margin-top: 5%;
+    background-color: grey;
+    }
     .center {
     margin: 0 auto;
     text-align: center;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    }
+
+    select {
+    min-width: 100px;
+    }
+
+    .positionizer {
+    position: static;
+    margin: 0 auto;
+
+    text-align: center;
+    margin-left: -260px;
     }
        .multipleSelection {
             width: 180px;
             background-color: #BCC2C1;
-            position: fixed;
+            position: absolute;
         }
 
         .selectBox {
@@ -43,11 +61,25 @@
         #checkBoxes label:hover {
             background-color: #4F615E;
         }
+        .formular {
+        border: 1px solid black;
+        background-color: silver;
+        }
+
+        .centerTwo {
+        margin-left: 10%;
+        }
     </style>
 </head>
 <body>
-<form method="post" action="saveHumanBean" th:object="${humanBeanToSave}">
+<div class="formular">
+<h1 class="center">Erstellen Sie Ihren Stammbaum!</h1>
+<h4 class="center">Fangen Sie mit der ältesten Person an und schließen Sie den Stammbaum mit sich zum Schluss ab!</h4>
+<form class="centerTwo" method="post" action="saveHumanBean" th:object="${humanBeanToSave}">
     <input th:field="*{age}" type="number" placeholder="Alter">
+    <p  class="fielderror-container" th:if="${#fields.hasErrors('age')}">
+        <span  class="fielderror-detail"  id="errorTwo" th:each="err : ${#fields.errors('age')}" th:text="${err}"></span>
+    </p>
     <input th:field="*{firstName}" type="text" placeholder="Vorname">
     <input th:field="*{lastName}" type="text" placeholder="Nachname">
     <select th:field="*{gender}">
@@ -55,15 +87,17 @@
         <option value="1">weiblich</option>
         <option value="2">beides</option>
     </select>
-    <a href="http://localhost:8080/saveCountry" style="font-size: 10px">Länder hinzufügen</a>
-    <select for="country"   th:if="${countries.size() > 0}" th:field="*{country}" >
-        <option  th:each="country : ${countries}"
-                th:text="${country.country}"
-                th:value="${countries.indexOf(country)}"></option>
-    </select>
-    <p th:if="${fail == 1}">
-        Bitte füge noch ein Land hinzu!
-    </p>
+    <span for="country">
+        <a href="http://localhost:8080/saveCountry" style="font-size: 10px">Länder hinzufügen</a>
+        <select th:if="${countries.size() > 0}" th:field="*{country}" >
+            <option th:each="country : ${countries}"
+                    th:text="${country.country}"
+                    th:value="${countries.indexOf(country)}"></option>
+        </select>
+        <p  class="fielderror-container" th:if="${#fields.hasErrors('country')}">
+            <span  class="fielderror-detail"  id="errorOne" th:each="err : ${#fields.errors('country')}" th:text="${err}"></span>
+        </p>
+    </span>
     <select th:field="*{motherIndex}">
         <option th:value="${null}"> </option>
         <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
@@ -72,6 +106,7 @@
         <option th:value="${null}"> </option>
         <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
     </select>
+    <div class="positionizer">
     <span class="multipleSelection">
         <div class="selectBox"
              onclick="showCheckboxes()">
@@ -86,6 +121,7 @@
             </label>
         </div>
     </span>
+        </div>
     <script>
         var show = true;
         function showCheckboxes() {
@@ -101,14 +137,14 @@
         }
     </script>
     <div class="center">
-    <button type="submit">speichern</button>
+    <button type="submit" style="margin-left: -10%">speichern</button>
     </div>
 </form>
 <form method="get" action="familyTree">
     <div class="center">
     <button type="submit">Familienbaum erzeugen!</button>
     </div>
-
 </form>
+</div>
 </body>
 </html>
