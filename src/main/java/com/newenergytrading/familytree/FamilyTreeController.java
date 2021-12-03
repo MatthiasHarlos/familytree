@@ -69,7 +69,7 @@ public class FamilyTreeController {
                     new HumanBean(null);
                 } catch (IllegalArgumentException e) {
                     bindingResult.rejectValue("motherIndex", "invalid.motherIndex", "Kann nicht gewählt werden!");
-                    errors.add("\"falsche Mutter <a href='http://localhost:8080/familyTree/'>zurück</a>\"");
+                    errors.add("\"falsche Mutter <a href='https://stammbaum-family.herokuapp.com/familyTree/'>zurück</a>\"");
                 }
             }
         }
@@ -79,12 +79,12 @@ public class FamilyTreeController {
                     new HumanBean(null);
                 } catch (IllegalArgumentException e) {
                     bindingResult.rejectValue("fatherIndex", "invalid.fatherIndex", "Kann nicht gewählt werden!");
-                    errors.add("\"falscher Vater <a href='http://localhost:8080/familyTree/'>zurück</a>\"");
+                    errors.add("\"falscher Vater <a href='https://stammbaum-family.herokuapp.com/familyTree/'>zurück</a>\"");
                 }
             }
         }
         if (bindingResult.hasFieldErrors("age")) {
-            errors.add("\"Alter darf nicht leer sein <a href='http://localhost:8080/familyTree/'>zurück</a>\"");
+            errors.add("\"Alter darf nicht leer sein <a href='https://stammbaum-family.herokuapp.com/familyTree/'>zurück</a>\"");
         }
     }
 
