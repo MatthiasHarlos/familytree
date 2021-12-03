@@ -103,6 +103,7 @@ public class FamilyTreeController {
         model.addAttribute("countries", countryList);
         System.out.println(bindingResult);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("humanList", humanList);
             model.addAttribute("humanBeanToSave", humanBeanToSave);
             return "input-template";
         }
