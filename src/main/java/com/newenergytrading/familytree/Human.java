@@ -15,6 +15,8 @@ public class Human {
     private String gender;
     private int listNumber;
     private String closeButton;
+    private String isParent;
+
 
     public String getFamilyTreeSiblings() {
         String siblingString = "";
@@ -272,5 +274,13 @@ public class Human {
 
     public void setListNumber(int listNumber) {
         this.listNumber = listNumber;
+    }
+
+    public String isParent() {
+        return isParent;
+    }
+
+    public void setParent(String parent) {
+        isParent = parent;
     }
 }

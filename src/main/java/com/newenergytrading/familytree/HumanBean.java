@@ -16,7 +16,7 @@ public class HumanBean {
     @NotNull(message = "Bitte wähle zuerst ein Land aus!")
     private Integer country;
     private Integer gender;
-
+    private Integer initialGeneration;
     private int listNumber;
 
 
@@ -101,6 +101,14 @@ public class HumanBean {
 
     public void setListNumber(int listNumber) {
         this.listNumber = listNumber;
+    }
+
+    public Integer getInitialGeneration() {
+        return initialGeneration;
+    }
+
+    public void setInitialGeneration(Integer initialGeneration) {
+        this.initialGeneration = initialGeneration;
     }
 
     @Override

@@ -13,11 +13,9 @@
     }
 
     .center {
-    margin: 0 50%;
+    margin: 0 35%;
     width: 100%;
     }
-
-* {margin: 0; padding: 0;}
 
 .tree ul {
 	padding-top: 20px; position: relative;
@@ -133,9 +131,9 @@
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
-  position: absolute;
+  position: relative;
   display: none;
-  margin: 0 40%;
+  margin: 0 auto;
   width: 350px;
   text-align: center;
   border: 3px solid #f1f1f1;
@@ -242,8 +240,8 @@ background-color: silver;
 <body>
 <div class="familyTree">
 <h2>Ihr Familien-Stammbaum:</h2>
-
-<div class="tree center ">
+    <a href="https://stammbaum-family.herokuapp.com/">Möchten Sie weitere Personen anlegen?</a>
+<div class="tree center">
     <ul th:utext="${familyTree}">
     </ul>
 </div>
@@ -278,30 +276,23 @@ background-color: silver;
 
 <select th:field="*{motherIndex}" id="motherIndex" name='motherIndex'>
         <option th:value="${null}"> </option>
-        <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+        <option th:if="${human.isParent != 'parent' and humanList.indexOf(human) != (humanList.size()-1)}" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
     </select>
 
     <select id="fatherIndex" name="fatherIndex">
         <option th:value="${null}"> </option>
-        <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+        <option th:if="${human.isParent != 'parent' and humanList.indexOf(human) != (humanList.size()-1)}" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
     </select>
 
-     <div class="positionizer">
-    <span class="multipleSelection">
-        <div class="selectBox"
-             onclick="showCheckboxes()">
-    <select>
-        <option>Wähle Geschwister:</option>
-    </select>
-            <div class="overSelect"></div>
+
+        <div class="selectBox">
+            Wähle Geschwister:
         </div>
-        <div id="checkBoxes">
+        <div>
             <label >
-                <input id="siblingsIndex" name="siblingsIndex" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}" type="checkbox"/>
+                <input th:if="${human.isParent != 'parent' and humanList.indexOf(human) != (humanList.size()-1)}"  id="siblingsIndex" name="siblingsIndex" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}" type="checkbox"/>
             </label>
         </div>
-    </span>
-     </div>
      <div style="margin-top: 10%">
         <button type="submit" class="btn">Ändern</button>
         <span th:utext="${human.getCloseButton()}"></span>

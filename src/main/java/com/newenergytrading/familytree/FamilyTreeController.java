@@ -15,6 +15,8 @@ import java.util.Objects;
 public class FamilyTreeController {
 
     private static List<String> errors = new ArrayList<>();
+    private static Human initialGeneration;
+    private static Integer initialNumber;
     private static List<Human> humanList = new ArrayList<>();
     private static List<CountryForm> countryList = new ArrayList<>();
     private static List<String> genderColors = List.of("style='background-color:green'", "style='background-color:red'", "style='background-color:blue'");
@@ -24,6 +26,7 @@ public class FamilyTreeController {
         model.addAttribute("humanBeanToSave", new HumanBean());
         model.addAttribute("humanList", humanList);
         model.addAttribute("countries", countryList);
+        model.addAttribute("initialGeneration", initialNumber);
         return "input-template";
     }
 
@@ -42,11 +45,13 @@ public class FamilyTreeController {
         human.setFirstName(humanBean.getFirstName());
         human.setLastName(humanBean.getLastName());
 
-        if (humanBean.getMotherIndex() != null && humanBean.getMotherIndex() < humanBean.getListNumber()) {
+        if (humanBean.getMotherIndex() != null && humanBean.getMotherIndex() != humanBean.getListNumber() && humanList.get(humanBean.getMotherIndex()).isParent() == null) {
                 human.setMother(humanList.get(humanBean.getMotherIndex()));
+            humanList.get(humanBean.getMotherIndex()).setParent("parent");
         }
-        if (humanBean.getFatherIndex() != null && humanBean.getFatherIndex() < humanBean.getListNumber()) {
+        if (humanBean.getFatherIndex() != null && humanBean.getFatherIndex() != humanBean.getListNumber() && humanList.get(humanBean.getFatherIndex()).isParent() == null) {
             human.setFather(humanList.get(humanBean.getFatherIndex()));
+            humanList.get(humanBean.getFatherIndex()).setParent("parent");
         }
         if (humanBean.getSiblingsIndex() != null) {
             for (int i = 0; i < humanBean.getSiblingsIndex().size(); i++) {
@@ -57,34 +62,38 @@ public class FamilyTreeController {
         human.setGender(genderColors.get(humanBean.getGender()));
         human.setAge(humanBean.getAge());
         humanList.set(humanBean.getListNumber(), human);
-
         System.out.println(humanBean);
         return "redirect:familyTree";
     }
 
     private void getErrorCode(HumanBean humanBean, BindingResult bindingResult) {
-        if ( humanBean.getMotherIndex() != null && humanBean.getMotherIndex() >= humanBean.getListNumber()) {
+        String href = "https://stammbaum-family.herokuapp.com/familyTree/";
+        if ( humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).isParent() != null && humanBean.getMotherIndex() == humanBean.getListNumber() && humanList.get(humanBean.getMotherIndex()).isParent().equals("parent")  ||
+                humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).isParent() != null  && humanList.get(humanBean.getMotherIndex()).isParent().equals("parent") ||
+                humanBean.getMotherIndex() != null && humanBean.getMotherIndex() == (humanList.size()-1)) {
             if (!bindingResult.hasFieldErrors("motherIndex")) {
                 try {
                     new HumanBean(null);
                 } catch (IllegalArgumentException e) {
                     bindingResult.rejectValue("motherIndex", "invalid.motherIndex", "Kann nicht gewählt werden!");
-                    errors.add("\"falsche Mutter <a href='https://stammbaum-family.herokuapp.com/familyTree/'>zurück</a>\"");
+                    errors.add("\"falsche Mutter <a href='" + href +  "'>zurück</a>\"");
                 }
             }
         }
-        if (humanBean.getFatherIndex() != null && humanBean.getFatherIndex() >= humanBean.getListNumber()) {
-            if (!bindingResult.hasFieldErrors("motherIndex")) {
+        if (humanBean.getFatherIndex() != null && humanList.get(humanBean.getFatherIndex()).isParent() != null && humanBean.getFatherIndex() == humanBean.getListNumber() && humanList.get(humanBean.getFatherIndex()).isParent().equals("parent")||
+                humanBean.getFatherIndex() != null && humanList.get(humanBean.getFatherIndex()).isParent() != null && humanList.get(humanBean.getFatherIndex()).isParent().equals("parent") ||
+                humanBean.getFatherIndex() != null && humanBean.getFatherIndex() == (humanList.size()-1)) {
+            if (!bindingResult.hasFieldErrors("fatherIndex")) {
                 try {
                     new HumanBean(null);
                 } catch (IllegalArgumentException e) {
                     bindingResult.rejectValue("fatherIndex", "invalid.fatherIndex", "Kann nicht gewählt werden!");
-                    errors.add("\"falscher Vater <a href='https://stammbaum-family.herokuapp.com/familyTree/'>zurück</a>\"");
+                    errors.add("\"falscher Vater <a href='" + href +  "'>zurück</a>\"");
                 }
             }
         }
         if (bindingResult.hasFieldErrors("age")) {
-            errors.add("\"Alter darf nicht leer sein <a href='https://stammbaum-family.herokuapp.com/familyTree/'>zurück</a>\"");
+            errors.add("\"Alter darf nicht leer sein <a href='" + href +  "'>zurück</a>\"");
         }
     }
 
@@ -103,9 +112,11 @@ public class FamilyTreeController {
         Human humanToSave = new Human(humanBeanToSave.getAge(), humanBeanToSave.getFirstName(), humanBeanToSave.getLastName());
         if (humanBeanToSave.getMotherIndex() != null) {
             humanToSave.setMother(humanList.get(humanBeanToSave.getMotherIndex()));
+            humanList.get(humanBeanToSave.getMotherIndex()).setParent("parent");
         }
         if (humanBeanToSave.getFatherIndex() != null) {
             humanToSave.setFather(humanList.get(humanBeanToSave.getFatherIndex()));
+            humanList.get(humanBeanToSave.getMotherIndex()).setParent("parent");
         }
         if (humanBeanToSave.getSiblingsIndex() != null) {
             for (int i = 0; i < humanBeanToSave.getSiblingsIndex().size(); i++) {
@@ -124,6 +135,9 @@ public class FamilyTreeController {
         humanToSave.setListNumber(humanList.indexOf(humanToSave));
         System.out.println(humanList);
         model.addAttribute("humanList", humanList);
+
+        model.addAttribute("initialGeneration", initialNumber);
+
         return "input-template";
     }
 
@@ -138,8 +152,18 @@ public class FamilyTreeController {
         }
     }
 
-    @GetMapping("familyTree")
-    public String familyTreeOutput(Model model) {
+    @PostMapping("familyTree")
+    public String familyTreeOutput(Model model, HumanBean getGenerationStart) {
+        if(getGenerationStart.getInitialGeneration() != null) {
+            initialGeneration = humanList.get(getGenerationStart.getInitialGeneration());
+            initialNumber = getGenerationStart.getInitialGeneration();
+            model.addAttribute("initialGeneration", getGenerationStart.getInitialGeneration());
+        } else {
+            initialGeneration = null;
+            initialNumber = null;
+        }
+
+
         if (humanList.size() < 1) {
             return "redirect:/";
         }
@@ -148,8 +172,13 @@ public class FamilyTreeController {
         model.addAttribute("countries", countryList);
         model.addAttribute("failing", errors);
         model.addAttribute("humanBeanToSave", new HumanBean());
-        model.addAttribute("familyTree", humanList.get(humanList.size()-1).getFamilyTree());
-        model.addAttribute("scriptPopUp", humanList.get(humanList.size()-1).getScript());
+        if (initialGeneration == null) {
+            model.addAttribute("familyTree", humanList.get(humanList.size() - 1).getFamilyTree());
+            model.addAttribute("scriptPopUp", humanList.get(humanList.size() - 1).getScript());
+        } else {
+            model.addAttribute("familyTree", initialGeneration.getFamilyTree());
+            model.addAttribute("scriptPopUp", initialGeneration.getScript());
+        }
         model.addAttribute("humanList", humanList);
         return "output-template";
     }
