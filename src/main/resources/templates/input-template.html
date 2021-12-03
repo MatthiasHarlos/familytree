@@ -124,7 +124,7 @@
     </div>
     <div>
         <span for="country">
-            <a href="https://stammbaum-family.herokuapp.com/saveCountry" style="font-size: 10px">Länder hinzufügen</a>
+            <a href="http://localhost:8080/saveCountry" style="font-size: 10px">Länder hinzufügen</a>
             <select th:if="${countries.size() > 0}" th:field="*{country}" >
                 <option th:each="country : ${countries}"
                     th:text="${country.country}"

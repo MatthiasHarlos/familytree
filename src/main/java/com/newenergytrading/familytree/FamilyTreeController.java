@@ -67,7 +67,7 @@ public class FamilyTreeController {
     }
 
     private void getErrorCode(HumanBean humanBean, BindingResult bindingResult) {
-        String href = "https://stammbaum-family.herokuapp.com/familyTree/";
+        String href = "http://localhost:8080/familyTree/";
         if ( humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).isParent() != null && humanBean.getMotherIndex() == humanBean.getListNumber() && humanList.get(humanBean.getMotherIndex()).isParent().equals("parent")  ||
                 humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).isParent() != null  && humanList.get(humanBean.getMotherIndex()).isParent().equals("parent") ||
                 humanBean.getMotherIndex() != null && humanBean.getMotherIndex() == (humanList.size()-1)) {
@@ -165,6 +165,27 @@ public class FamilyTreeController {
         }
 
 
+        if (humanList.size() < 1) {
+            return "redirect:/";
+        }
+        errors = new ArrayList<>();
+        model.addAttribute("genderColors", genderColors);
+        model.addAttribute("countries", countryList);
+        model.addAttribute("failing", errors);
+        model.addAttribute("humanBeanToSave", new HumanBean());
+        if (initialGeneration == null) {
+            model.addAttribute("familyTree", humanList.get(humanList.size() - 1).getFamilyTree());
+            model.addAttribute("scriptPopUp", humanList.get(humanList.size() - 1).getScript());
+        } else {
+            model.addAttribute("familyTree", initialGeneration.getFamilyTree());
+            model.addAttribute("scriptPopUp", initialGeneration.getScript());
+        }
+        model.addAttribute("humanList", humanList);
+        return "output-template";
+    }
+
+    @GetMapping("familyTree")
+    public String familyTree(Model model) {
         if (humanList.size() < 1) {
             return "redirect:/";
         }
