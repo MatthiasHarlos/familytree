@@ -256,11 +256,31 @@ background-color: silver;
         <input onkeypress='return /[a-z]/i.test(event.key)' id='firstName' type="text"  th:value="${human.firstName}" name="firstName">
         <input onkeypress='return /[a-z]/i.test(event.key)' id='lastName' type="text" th:value="${human.lastName}" name="lastName">
         <input id='listNumber' th:value="${human.listNumber}" type="number" name="listNumber" hidden>
+        <input id="age" name="age" type="number" th:value="${human.age}">
 
-<select id="motherIndex" name='motherIndex'>
+     <select id="gender" name="gender">
+         <option
+                 th:value="${genderColors.indexOf(human.gender)}">beibehalten!</option>
+         <option value="0">männlich</option>
+         <option value="1">weiblich</option>
+         <option value="2">beides</option>
+     </select>
+
+     <select th:if="${countries.size() > 0}" th:field="*{country}" >
+         <option th:text="${human.getCountry().getCountry()}"
+                 th:value="${countries.indexOf(human.country)}"></option>
+         <option th:each="country : ${countries}"
+                 th:text="${country.country}"
+                 th:value="${countries.indexOf(country)}"></option>
+     </select>
+
+
+
+<select th:field="*{motherIndex}" id="motherIndex" name='motherIndex'>
         <option th:value="${null}"> </option>
         <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
     </select>
+
     <select id="fatherIndex" name="fatherIndex">
         <option th:value="${null}"> </option>
         <option th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
@@ -287,7 +307,11 @@ background-color: silver;
         <span th:utext="${human.getCloseButton()}"></span>
      </div>
     </form>
+
 </div>
+<p   th:if="${failing.size() > 0}">
+    <span  th:each="error : ${failing}" th:utext="${error}"></span>
+</p>
 
 <script>
         var show = true;

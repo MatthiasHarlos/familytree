@@ -14,6 +14,7 @@ import java.util.Objects;
 @Controller
 public class FamilyTreeController {
 
+    private static List<String> errors = new ArrayList<>();
     private static List<Human> humanList = new ArrayList<>();
     private static List<CountryForm> countryList = new ArrayList<>();
     private static List<String> genderColors = List.of("style='background-color:green'", "style='background-color:red'", "style='background-color:blue'");
@@ -27,10 +28,20 @@ public class FamilyTreeController {
     }
 
     @PostMapping("changing")
-    public String changingTree (HumanBean humanBean) {
+    public String changingTree (Model model,@Valid @ModelAttribute("humanBeanToSave") HumanBean humanBean, BindingResult bindingResult) {
+        errors = new ArrayList<>();
+        getErrorCode(humanBean, bindingResult);
+        System.out.println(bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("countries", countryList);
+            model.addAttribute("genderColors", genderColors);
+            model.addAttribute("failing", errors);
+            return "output-template";
+        }
         Human human = humanList.get(humanBean.getListNumber());
         human.setFirstName(humanBean.getFirstName());
         human.setLastName(humanBean.getLastName());
+
         if (humanBean.getMotherIndex() != null && humanBean.getMotherIndex() < humanBean.getListNumber()) {
                 human.setMother(humanList.get(humanBean.getMotherIndex()));
         }
@@ -43,11 +54,38 @@ public class FamilyTreeController {
                 human.getSiblings().add(humanList.get(humanBean.getSiblingsIndex().get(i)));
             }
         }
-
+        human.setGender(genderColors.get(humanBean.getGender()));
+        human.setAge(humanBean.getAge());
         humanList.set(humanBean.getListNumber(), human);
 
         System.out.println(humanBean);
         return "redirect:familyTree";
+    }
+
+    private void getErrorCode(HumanBean humanBean, BindingResult bindingResult) {
+        if ( humanBean.getMotherIndex() != null && humanBean.getMotherIndex() >= humanBean.getListNumber()) {
+            if (!bindingResult.hasFieldErrors("motherIndex")) {
+                try {
+                    new HumanBean(null);
+                } catch (IllegalArgumentException e) {
+                    bindingResult.rejectValue("motherIndex", "invalid.motherIndex", "Kann nicht gewählt werden!");
+                    errors.add("\"falsche Mutter <a href='http://localhost:8080/familyTree/'>zurück</a>\"");
+                }
+            }
+        }
+        if (humanBean.getFatherIndex() != null && humanBean.getFatherIndex() >= humanBean.getListNumber()) {
+            if (!bindingResult.hasFieldErrors("motherIndex")) {
+                try {
+                    new HumanBean(null);
+                } catch (IllegalArgumentException e) {
+                    bindingResult.rejectValue("fatherIndex", "invalid.fatherIndex", "Kann nicht gewählt werden!");
+                    errors.add("\"falscher Vater <a href='http://localhost:8080/familyTree/'>zurück</a>\"");
+                }
+            }
+        }
+        if (bindingResult.hasFieldErrors("age")) {
+            errors.add("\"Alter darf nicht leer sein <a href='http://localhost:8080/familyTree/'>zurück</a>\"");
+        }
     }
 
     @PostMapping("saveHumanBean")
@@ -105,6 +143,11 @@ public class FamilyTreeController {
         if (humanList.size() < 1) {
             return "redirect:/";
         }
+        errors = new ArrayList<>();
+        model.addAttribute("genderColors", genderColors);
+        model.addAttribute("countries", countryList);
+        model.addAttribute("failing", errors);
+        model.addAttribute("humanBeanToSave", new HumanBean());
         model.addAttribute("familyTree", humanList.get(humanList.size()-1).getFamilyTree());
         model.addAttribute("scriptPopUp", humanList.get(humanList.size()-1).getScript());
         model.addAttribute("humanList", humanList);
