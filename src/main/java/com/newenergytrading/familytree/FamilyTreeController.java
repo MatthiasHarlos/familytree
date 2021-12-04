@@ -81,10 +81,17 @@ public class FamilyTreeController {
         if (humanBean.getMotherIndex() != null && humanBean.getMotherIndex() != humanBean.getListNumber() && humanList.get(humanBean.getMotherIndex()).isParent() == null) {
             human.setMother(humanList.get(humanBean.getMotherIndex()));
             humanList.get(humanBean.getMotherIndex()).setParent("parent");
+            if (!humanList.get(humanBean.getMotherIndex()).getGender().equals(genderColors.get(2))) {
+                humanList.get(humanBean.getMotherIndex()).setGender(genderColors.get(1));
+            }
+
         }
         if (humanBean.getFatherIndex() != null && humanBean.getFatherIndex() != humanBean.getListNumber() && humanList.get(humanBean.getFatherIndex()).isParent() == null) {
             human.setFather(humanList.get(humanBean.getFatherIndex()));
             humanList.get(humanBean.getFatherIndex()).setParent("parent");
+            if (!humanList.get(humanBean.getFatherIndex()).getGender().equals(genderColors.get(2))) {
+                humanList.get(humanBean.getFatherIndex()).setGender(genderColors.get(0));
+            }
         }
         if (humanBean.getSiblingsIndex() != null) {
             for (int i = 0; i < humanBean.getSiblingsIndex().size(); i++) {
@@ -110,14 +117,14 @@ public class FamilyTreeController {
         Human possibleFather = new Human();
         if (humanBean.getMotherIndex() != null) {
             for (Human possibleHuman : humanList) {
-                if (possibleHuman.getListNumber() == humanBean.getMotherIndex()) {
+                if (possibleHuman.getListNumber().equals(humanBean.getMotherIndex())) {
                     possibleMother = possibleHuman;
                 }
             }
         }
         if (humanBean.getFatherIndex() != null) {
             for (Human possibleHuman : humanList) {
-                if (possibleHuman.getListNumber() == humanBean.getFatherIndex()) {
+                if (possibleHuman.getListNumber().equals(humanBean.getFatherIndex())) {
                     possibleFather = possibleHuman;
                 }
             }
@@ -170,11 +177,17 @@ public class FamilyTreeController {
             humanToSave.setMother(humanList.get(humanBeanToSave.getMotherIndex()));
             humanList.get(humanBeanToSave.getMotherIndex()).setChildMom(humanToSave);
             humanList.get(humanBeanToSave.getMotherIndex()).setParent("parent");
+            if (humanBeanToSave.getGender() != 2) {
+                humanList.get(humanBeanToSave.getMotherIndex()).setGender(genderColors.get(1));
+            }
         }
         if (humanBeanToSave.getFatherIndex() != null) {
             humanToSave.setFather(humanList.get(humanBeanToSave.getFatherIndex()));
             humanList.get(humanBeanToSave.getFatherIndex()).setChildDad(humanToSave);
             humanList.get(humanBeanToSave.getMotherIndex()).setParent("parent");
+            if (humanBeanToSave.getGender() != 2) {
+                humanList.get(humanBeanToSave.getFatherIndex()).setGender(genderColors.get(0));
+            }
         }
         if (humanBeanToSave.getSiblingsIndex() != null) {
             for (int i = 0; i < humanBeanToSave.getSiblingsIndex().size(); i++) {
