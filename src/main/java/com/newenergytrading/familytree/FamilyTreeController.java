@@ -71,8 +71,8 @@ public class FamilyTreeController {
     }
 
     private void getErrorCode(HumanBean humanBean, BindingResult bindingResult) {
-        String href = "http://localhost:8080/";
-        String href2 = "https://stammbaum-family.herokuapp.com/familyTree/";
+        String href2 = "http://localhost:8080/familyTree";
+        String href = "https://stammbaum-family.herokuapp.com/familyTree";
         if ( humanBean.getMotherIndex() != null &&  humanBean.getMotherIndex() == humanBean.getListNumber() ||
                 humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).isParent() != null  && humanList.get(humanBean.getMotherIndex()).isParent().equals("parent") ||
                 humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).possibleMother(humanList.get(humanBean.getMotherIndex()), humanBean.getListNumber()) != null
