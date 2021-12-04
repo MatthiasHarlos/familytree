@@ -105,9 +105,26 @@ public class FamilyTreeController {
     private void getErrorCode(HumanBean humanBean, BindingResult bindingResult) {
         String href2 = "http://localhost:8080/familyTree";
         String href = "https://stammbaum-family.herokuapp.com/familyTree";
+
+        Human possibleMother = new Human();
+        Human possibleFather = new Human();
+        if (humanBean.getMotherIndex() != null) {
+            for (Human possibleHuman : humanList) {
+                if (possibleHuman.getListNumber() == humanBean.getMotherIndex()) {
+                    possibleMother = possibleHuman;
+                }
+            }
+        }
+        if (humanBean.getFatherIndex() != null) {
+            for (Human possibleHuman : humanList) {
+                if (possibleHuman.getListNumber() == humanBean.getFatherIndex()) {
+                    possibleFather = possibleHuman;
+                }
+            }
+        }
         if ( humanBean.getMotherIndex() != null &&  humanBean.getMotherIndex() == humanBean.getListNumber() ||
                 humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).isParent() != null  && humanList.get(humanBean.getMotherIndex()).isParent().equals("parent") ||
-                humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).possibleMother(humanList.get(humanBean.getMotherIndex()), humanBean.getListNumber()) != null
+                humanBean.getMotherIndex() != null && possibleMother.possibleParent(humanBean.getListNumber()) == humanBean.getListNumber()
         ){
             if (!bindingResult.hasFieldErrors("motherIndex")) {
                 try {
@@ -120,7 +137,7 @@ public class FamilyTreeController {
         }
         if (humanBean.getFatherIndex() != null &&  humanBean.getFatherIndex() == humanBean.getListNumber() ||
                 humanBean.getFatherIndex() != null && humanList.get(humanBean.getFatherIndex()).isParent() != null && humanList.get(humanBean.getFatherIndex()).isParent().equals("parent") ||
-                humanBean.getFatherIndex() != null && humanList.get(humanBean.getFatherIndex()).possibleFather(humanList.get(humanBean.getFatherIndex()), humanBean.getListNumber()) != null ) {
+                humanBean.getFatherIndex() != null && possibleFather.possibleParent(humanBean.getListNumber()) == humanBean.getListNumber() ) {
             if (!bindingResult.hasFieldErrors("fatherIndex")) {
                 try {
                     new HumanBean(null);

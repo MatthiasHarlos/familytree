@@ -78,22 +78,27 @@ public class Human {
         }
     }
 
-    public Human possibleMother(Human possibleMother, int numberOfList) {
-        if (possibleMother.getListNumber() == numberOfList) {
-            return possibleMother;
-        } else if(possibleMother.getMother() != null) {
-            return possibleMother.possibleMother(possibleMother.getMother(), numberOfList);
+    public Integer possibleParent(int numberOfList) {
+        if (this.getMother() == null && this.getFather() == null) {
+            if (this.getListNumber() == numberOfList) {
+                return this.getListNumber();
+            }
+        } else if(this.getMother() != null && this.getFather() != null) {
+            if (this.getMother().possibleParent(numberOfList) == numberOfList) {
+                return this.getMother().possibleParent(numberOfList);
+            } else if (this.getFather().possibleParent(numberOfList) == numberOfList) {
+                return this.getFather().possibleParent(numberOfList);
+            }
+        } else if (this.getMother() != null && this.getFather() == null) {
+            if (this.getMother().possibleParent(numberOfList) == numberOfList) {
+                return this.getMother().possibleParent(numberOfList);
+            }
+        } else if (this.getMother() == null && this.getFather() != null) {
+            if (this.getFather().possibleParent(numberOfList) == numberOfList) {
+                return this.getFather().possibleParent(numberOfList);
+            }
         }
-        return null;
-    }
-
-    public Human possibleFather(Human possibleFather, int numberOfList) {
-        if (possibleFather.getListNumber() == numberOfList) {
-            return possibleFather;
-        } else if(possibleFather.getFather() != null) {
-            return possibleFather.possibleFather(possibleFather.getFather(), numberOfList);
-        }
-        return null;
+        return this.getListNumber();
     }
 
     public String getFamilyTreeSiblings() {
