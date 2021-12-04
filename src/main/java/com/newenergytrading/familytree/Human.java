@@ -16,7 +16,31 @@ public class Human {
     private int listNumber;
     private String closeButton;
     private String isParent;
+    private Human childMom;
+    private Human childDad;
 
+    public void setIsNoParent() {
+        if(childMom != null && !this.childMom.getMother().equals(this) || childDad != null && !this.childDad.getFather().equals(this)) {
+            isParent = null;
+        }
+    }
+
+    public Human possibleMother(Human possibleMother, int numberOfList) {
+        if (possibleMother.getListNumber() == numberOfList) {
+            return possibleMother;
+        } else if(possibleMother.getMother() != null && possibleMother.possibleMother(possibleMother.getMother(), numberOfList).getListNumber() == numberOfList) {
+            return possibleMother.possibleMother(possibleMother.getMother(), numberOfList);
+        }
+        return null;
+    }
+    public Human possibleFather(Human possibleFather, int numberOfList) {
+        if (possibleFather.getListNumber() == numberOfList) {
+            return possibleFather;
+        } else if(possibleFather.getFather() != null && possibleFather.possibleFather(possibleFather.getFather(), numberOfList).getListNumber() == numberOfList) {
+            return possibleFather.possibleFather(possibleFather.getFather(), numberOfList);
+        }
+        return null;
+    }
 
     public String getFamilyTreeSiblings() {
         String siblingString = "";
@@ -282,5 +306,21 @@ public class Human {
 
     public void setParent(String parent) {
         isParent = parent;
+    }
+
+    public Human getChildMom() {
+        return childMom;
+    }
+
+    public void setChildMom(Human childMom) {
+        this.childMom = childMom;
+    }
+
+    public Human getChildDad() {
+        return childDad;
+    }
+
+    public void setChildDad(Human childDad) {
+        this.childDad = childDad;
     }
 }

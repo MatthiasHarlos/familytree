@@ -240,7 +240,7 @@ background-color: silver;
 <body>
 <div class="familyTree">
 <h2>Ihr Familien-Stammbaum:</h2>
-    <a href="http://localhost:8080/">Möchten Sie weitere Personen anlegen?</a>
+    <a href="https://stammbaum-family.herokuapp.com/">Möchten Sie weitere Personen anlegen?</a>
 <div class="tree center">
     <ul th:utext="${familyTree}">
     </ul>
@@ -276,12 +276,12 @@ background-color: silver;
 
 <select th:field="*{motherIndex}" id="motherIndex" name='motherIndex'>
         <option th:value="${null}"> </option>
-        <option th:if="${human.isParent != 'parent' and humanList.indexOf(human) != (humanList.size()-1)}" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+        <option th:if="${human.isParent != 'parent'}" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
     </select>
 
     <select id="fatherIndex" name="fatherIndex">
         <option th:value="${null}"> </option>
-        <option th:if="${human.isParent != 'parent' and humanList.indexOf(human) != (humanList.size()-1)}" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
+        <option th:if="${human.isParent != 'parent'}" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}"></option>
     </select>
 
 
@@ -290,7 +290,7 @@ background-color: silver;
         </div>
         <div>
             <label >
-                <input th:if="${human.isParent != 'parent' and humanList.indexOf(human) != (humanList.size()-1)}"  id="siblingsIndex" name="siblingsIndex" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}" type="checkbox"/>
+                <input th:if="${human.isParent != 'parent'}"  id="siblingsIndex" name="siblingsIndex" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}" th:value="${humanList.indexOf(human)}" type="checkbox"/>
             </label>
         </div>
      <div style="margin-top: 10%">

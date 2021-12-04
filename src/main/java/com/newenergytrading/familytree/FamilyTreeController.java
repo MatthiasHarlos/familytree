@@ -35,6 +35,7 @@ public class FamilyTreeController {
         errors = new ArrayList<>();
         getErrorCode(humanBean, bindingResult);
         System.out.println(bindingResult);
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("countries", countryList);
             model.addAttribute("genderColors", genderColors);
@@ -45,8 +46,11 @@ public class FamilyTreeController {
         human.setFirstName(humanBean.getFirstName());
         human.setLastName(humanBean.getLastName());
 
+        for(Human parentRemover : humanList) {
+            parentRemover.setIsNoParent();
+        }
         if (humanBean.getMotherIndex() != null && humanBean.getMotherIndex() != humanBean.getListNumber() && humanList.get(humanBean.getMotherIndex()).isParent() == null) {
-                human.setMother(humanList.get(humanBean.getMotherIndex()));
+            human.setMother(humanList.get(humanBean.getMotherIndex()));
             humanList.get(humanBean.getMotherIndex()).setParent("parent");
         }
         if (humanBean.getFatherIndex() != null && humanBean.getFatherIndex() != humanBean.getListNumber() && humanList.get(humanBean.getFatherIndex()).isParent() == null) {
@@ -67,10 +71,11 @@ public class FamilyTreeController {
     }
 
     private void getErrorCode(HumanBean humanBean, BindingResult bindingResult) {
-        String href = "http://localhost:8080/familyTree/";
-        if ( humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).isParent() != null && humanBean.getMotherIndex() == humanBean.getListNumber() && humanList.get(humanBean.getMotherIndex()).isParent().equals("parent")  ||
+        String href = "https://stammbaum-family.herokuapp.com/familyTree/";
+        if ( humanBean.getMotherIndex() != null &&  humanBean.getMotherIndex() == humanBean.getListNumber() ||
                 humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).isParent() != null  && humanList.get(humanBean.getMotherIndex()).isParent().equals("parent") ||
-                humanBean.getMotherIndex() != null && humanBean.getMotherIndex() == (humanList.size()-1)) {
+                humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).possibleMother(humanList.get(humanBean.getMotherIndex()), humanBean.getListNumber()) != null
+        ){
             if (!bindingResult.hasFieldErrors("motherIndex")) {
                 try {
                     new HumanBean(null);
@@ -80,9 +85,9 @@ public class FamilyTreeController {
                 }
             }
         }
-        if (humanBean.getFatherIndex() != null && humanList.get(humanBean.getFatherIndex()).isParent() != null && humanBean.getFatherIndex() == humanBean.getListNumber() && humanList.get(humanBean.getFatherIndex()).isParent().equals("parent")||
+        if (humanBean.getFatherIndex() != null &&  humanBean.getFatherIndex() == humanBean.getListNumber() ||
                 humanBean.getFatherIndex() != null && humanList.get(humanBean.getFatherIndex()).isParent() != null && humanList.get(humanBean.getFatherIndex()).isParent().equals("parent") ||
-                humanBean.getFatherIndex() != null && humanBean.getFatherIndex() == (humanList.size()-1)) {
+                humanBean.getFatherIndex() != null && humanList.get(humanBean.getFatherIndex()).possibleFather(humanList.get(humanBean.getFatherIndex()), humanBean.getListNumber()) != null ) {
             if (!bindingResult.hasFieldErrors("fatherIndex")) {
                 try {
                     new HumanBean(null);
@@ -113,10 +118,12 @@ public class FamilyTreeController {
         Human humanToSave = new Human(humanBeanToSave.getAge(), humanBeanToSave.getFirstName(), humanBeanToSave.getLastName());
         if (humanBeanToSave.getMotherIndex() != null) {
             humanToSave.setMother(humanList.get(humanBeanToSave.getMotherIndex()));
+            humanList.get(humanBeanToSave.getMotherIndex()).setChildMom(humanToSave);
             humanList.get(humanBeanToSave.getMotherIndex()).setParent("parent");
         }
         if (humanBeanToSave.getFatherIndex() != null) {
             humanToSave.setFather(humanList.get(humanBeanToSave.getFatherIndex()));
+            humanList.get(humanBeanToSave.getFatherIndex()).setChildDad(humanToSave);
             humanList.get(humanBeanToSave.getMotherIndex()).setParent("parent");
         }
         if (humanBeanToSave.getSiblingsIndex() != null) {
@@ -159,7 +166,8 @@ public class FamilyTreeController {
             initialGeneration = humanList.get(getGenerationStart.getInitialGeneration());
             initialNumber = getGenerationStart.getInitialGeneration();
             model.addAttribute("initialGeneration", getGenerationStart.getInitialGeneration());
-        } else {
+        }
+        else {
             initialGeneration = null;
             initialNumber = null;
         }
