@@ -52,6 +52,8 @@ public class FamilyTreeController {
                         if (possibleChild.getMother() != null) {
                             if (possibleChild.getMother().equals(possibleHuman)) {
                                 possibleChild.setMother(null);
+                            } else if (possibleChild.getFather().equals(possibleHuman)) {
+                                possibleChild.setFather(null);
                             }
                         }
                     }
