@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class FamilyTreeController {
@@ -42,6 +40,33 @@ public class FamilyTreeController {
             model.addAttribute("failing", errors);
             return "output-template";
         }
+
+        if (!humanBean.getDeleteMe().equals("no")) {
+            HashSet<Human> deleteHumanTree = new HashSet<>();
+
+            for (Human possibleHuman : humanList) {
+                if(possibleHuman.getListNumber() == humanBean.getListNumber()) {
+                    possibleHuman.deleteAllBelow(deleteHumanTree);
+
+                    for (Human possibleChild : humanList){
+                        if (possibleChild.getMother() != null) {
+                            if (possibleChild.getMother().equals(possibleHuman)) {
+                                possibleChild.setMother(null);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (humanBean.getDeleteMe().equals("A")) {
+                humanList.removeAll(deleteHumanTree);
+            }
+            System.out.println(humanList.size());
+            System.out.println(humanList);
+
+            return "redirect:familyTree";
+        }
+
         Human human = humanList.get(humanBean.getListNumber());
         human.setFirstName(humanBean.getFirstName());
         human.setLastName(humanBean.getLastName());
@@ -67,12 +92,15 @@ public class FamilyTreeController {
         human.setAge(humanBean.getAge());
         humanList.set(humanBean.getListNumber(), human);
         System.out.println(humanBean);
+
+
+
         return "redirect:familyTree";
     }
 
     private void getErrorCode(HumanBean humanBean, BindingResult bindingResult) {
-        String href2 = "http://localhost:8080/familyTree";
-        String href = "https://stammbaum-family.herokuapp.com/familyTree";
+        String href = "http://localhost:8080/familyTree";
+        String href2 = "https://stammbaum-family.herokuapp.com/familyTree";
         if ( humanBean.getMotherIndex() != null &&  humanBean.getMotherIndex() == humanBean.getListNumber() ||
                 humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).isParent() != null  && humanList.get(humanBean.getMotherIndex()).isParent().equals("parent") ||
                 humanBean.getMotherIndex() != null && humanList.get(humanBean.getMotherIndex()).possibleMother(humanList.get(humanBean.getMotherIndex()), humanBean.getListNumber()) != null

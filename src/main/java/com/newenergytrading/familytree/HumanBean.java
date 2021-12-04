@@ -18,6 +18,7 @@ public class HumanBean {
     private Integer gender;
     private Integer initialGeneration;
     private int listNumber;
+    private String deleteMe;
 
 
     public HumanBean() {
@@ -124,5 +125,13 @@ public class HumanBean {
                 ", gender=" + gender +
                 ", listNumber=" + listNumber +
                 '}';
+    }
+
+    public String getDeleteMe() {
+        return deleteMe;
+    }
+
+    public void setDeleteMe(String deleteMe) {
+        this.deleteMe = deleteMe;
     }
 }

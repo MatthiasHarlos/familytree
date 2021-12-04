@@ -1,6 +1,7 @@
 package com.newenergytrading.familytree;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Human {
@@ -19,9 +20,53 @@ public class Human {
     private Human childMom;
     private Human childDad;
 
+
+    @Override
+    public String toString() {
+        return "Human{" +
+                "firstName='" + firstName + '\'' +
+                ", mother=" + mother +
+                ", father=" + father +
+                '}';
+    }
+
     public void setIsNoParent() {
         if(childMom != null && !this.childMom.getMother().equals(this) || childDad != null && !this.childDad.getFather().equals(this)) {
             isParent = null;
+        }
+    }
+
+    public HashSet<Human> deleteAllBelow(HashSet<Human> deleteList) {
+        if (this.getMother() == null && this.getFather() == null) {
+            if (this.isParent != null) {
+                this.setParent(null);
+            }
+            deleteList.add(this);
+            return deleteList;
+        } else if (this.getMother() != null && this.getFather() == null) {
+            deleteList.add(this);
+            this.getMother().deleteAllBelow(deleteList);
+            this.getMother().setParent(null);
+            this.setMother(null);
+            return deleteList;
+        } else if (this.getMother() == null && this.getFather() != null) {
+            deleteList.add(this);
+            this.getFather().deleteAllBelow(deleteList);
+            this.getFather().setParent(null);
+            this.setFather(null);
+            return deleteList;
+        } else {
+            HashSet<Human> motherlist = this.getMother().deleteAllBelow(deleteList);
+            this.getMother().setParent(null);
+            this.setMother(null);
+            HashSet<Human> fatherlist = this.getFather().deleteAllBelow(deleteList);
+            this.getFather().setParent(null);
+            this.setFather(null);
+            deleteList.add(this);
+            deleteList.addAll(motherlist);
+            deleteList.addAll(fatherlist);
+
+            return deleteList;
         }
     }
 
