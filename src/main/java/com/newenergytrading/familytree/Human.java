@@ -36,11 +36,15 @@ public class Human {
         }
     }
 
+    private void deleteParent() {
+        if (this.isParent != null) {
+            this.setParent(null);
+        }
+    }
+
     public HashSet<Human> deleteAllBelow(HashSet<Human> deleteList) {
         if (this.getMother() == null && this.getFather() == null) {
-            if (this.isParent != null) {
-                this.setParent(null);
-            }
+            deleteParent();
             deleteList.add(this);
             return deleteList;
         } else if (this.getMother() != null && this.getFather() == null) {
@@ -48,20 +52,24 @@ public class Human {
             this.getMother().deleteAllBelow(deleteList);
             this.getMother().setParent(null);
             this.setMother(null);
+            deleteParent();
             return deleteList;
         } else if (this.getMother() == null && this.getFather() != null) {
             deleteList.add(this);
             this.getFather().deleteAllBelow(deleteList);
             this.getFather().setParent(null);
             this.setFather(null);
+            deleteParent();
             return deleteList;
         } else {
             HashSet<Human> motherlist = this.getMother().deleteAllBelow(deleteList);
             this.getMother().setParent(null);
             this.setMother(null);
+            deleteParent();
             HashSet<Human> fatherlist = this.getFather().deleteAllBelow(deleteList);
             this.getFather().setParent(null);
             this.setFather(null);
+
             deleteList.add(this);
             deleteList.addAll(motherlist);
             deleteList.addAll(fatherlist);
