@@ -13,7 +13,7 @@ public class Human {
     private List<Human> siblings = new ArrayList<>();
     private CountryForm country;
     private String gender;
-    private int listNumber;
+    private Integer listNumber;
     private String closeButton;
     private String isParent;
     private Human childMom;
@@ -28,15 +28,16 @@ public class Human {
     public Human possibleMother(Human possibleMother, int numberOfList) {
         if (possibleMother.getListNumber() == numberOfList) {
             return possibleMother;
-        } else if(possibleMother.getMother() != null && possibleMother.possibleMother(possibleMother.getMother(), numberOfList).getListNumber() == numberOfList) {
+        } else if(possibleMother.getMother() != null) {
             return possibleMother.possibleMother(possibleMother.getMother(), numberOfList);
         }
         return null;
     }
+
     public Human possibleFather(Human possibleFather, int numberOfList) {
         if (possibleFather.getListNumber() == numberOfList) {
             return possibleFather;
-        } else if(possibleFather.getFather() != null && possibleFather.possibleFather(possibleFather.getFather(), numberOfList).getListNumber() == numberOfList) {
+        } else if(possibleFather.getFather() != null) {
             return possibleFather.possibleFather(possibleFather.getFather(), numberOfList);
         }
         return null;
@@ -292,11 +293,11 @@ public class Human {
         this.gender = gender;
     }
 
-    public int getListNumber() {
+    public Integer getListNumber() {
         return listNumber;
     }
 
-    public void setListNumber(int listNumber) {
+    public void setListNumber(Integer listNumber) {
         this.listNumber = listNumber;
     }
 
