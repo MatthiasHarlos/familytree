@@ -94,9 +94,9 @@
 <div class="center">
             <div th:if="${humanList.size() > 0}">
                 <span>Startende Generation!<span class="help" title="Erweiterte Funktion: Legt den Stammbaum-Start als jüngste Generation fest! Wenn das Feld leer ist, wird die aktuell erstellte Person als jüngste Generation ausgegeben!">HELP?</span></span>
-                <select  id="initial" name="initial">
-                    <option onchange="saveToForm()" value=""> </option>
-                    <option onchange="saveToForm()" th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}"
+                <select  id="initial" name="initial" onselect="javascript: saveToForm();">
+                    <option  value=""> </option>
+                    <option  th:each="human : ${humanList}" th:text="${human.firstName + ' ' + human.lastName}"
                             th:value="${humanList.indexOf(human)}"
                             th:selected="${initialGeneration} == ${humanList.indexOf(human)}"></option>
                 </select>
