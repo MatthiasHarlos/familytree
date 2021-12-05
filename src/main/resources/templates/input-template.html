@@ -179,6 +179,11 @@
             }
         }
 
+        $("#initial").ready(function() {
+        var initial = document.getElementById("initial").value;
+        document.getElementById("initialGeneration").value = initial;
+        });
+
         function saveToForm() {
         var initial = document.getElementById("initial").value;
         document.getElementById("initialGeneration").value = initial;
