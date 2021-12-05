@@ -195,7 +195,7 @@
     </div>
 </form>
 <form method="post" action="familyTree" th:object="${initialHuman}">
-    <input th:value="${initialGeneration} == ${humanList.indexOf(human)}" name="initialGeneration" id="initialGeneration" type="number" hidden>
+    <input th:value="${initialGeneration} == ${humanList.indexOf(human)}"  name="initialGeneration" id="initialGeneration" type="number" hidden>
     <div class="centerButton">
     <button type="submit">Familienbaum erzeugen!</button>
     </div>
